@@ -18,12 +18,18 @@ const projectSchema = new mongoose.Schema({
   },
   github: {
     type: String,
-    trim: true
+    required: true,
+    trim: true,
+    unique: true
   },
   liveDemo: {
     type: String,
     trim: true
-  }
+  },
+  importedFromGithub: {
+        type: Boolean,
+        default: false
+    }
 }, { timestamps: true }); // ✅ adds createdAt & updatedAt
 
 const Project = mongoose.model("Project", projectSchema);
