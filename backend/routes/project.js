@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const Project = require('../Models/project.model'); 
-
+const fetch = require('node-fetch');
 
 // list
 router.route('/').get((req, res) => {
@@ -24,13 +24,15 @@ router.route('/add').post((req, res) => {
   const ts = req.body.techStack || [];
   const gh = req.body.github || '';
   const live = req.body.liveDemo || '';
+  const importedFromGithub = req.body.importedFromGithub || false;
 
   const newP = new Project({
     title: t,
     description: d,
     techStack: ts,
     github: gh,
-    liveDemo: live
+    liveDemo: live,
+    importedFromGithub: importedFromGithub
   });
 
   newP.save()
@@ -48,6 +50,7 @@ router.route('/update/:id').post((req, res) => {
       p.techStack = req.body.techStack ?? p.techStack;
       p.github = req.body.github ?? p.github;
       p.liveDemo = req.body.liveDemo ?? p.liveDemo;
+      
 
       p.save()
         .then(() => res.json('Project updated!'))
@@ -62,5 +65,106 @@ router.route('/:id').delete((req, res) => {
     .then(() => res.json('Project deleted.'))
     .catch(err => res.status(400).json('Error: ' + err));
 });
+
+
+// Import from GitHub route
+router.route('/import-github').post(async (req, res) => {
+    try {
+        const { githubUsername } = req.body;
+        const githubToken = process.env.GITHUB_PAT;
+        
+        if (!githubUsername) {
+            return res.status(400).json({ 
+                message: 'GitHub username is required' 
+            });
+        }
+
+        if (!githubToken) {
+            return res.status(400).json({
+                message: 'GitHub PAT is not configured'
+            });
+        }
+
+        const response = await fetch(
+            `https://api.github.com/users/${githubUsername}/repos`, 
+            {
+                headers: {
+                    'Authorization': `Bearer ${githubToken}`,
+                    'Accept': 'application/vnd.github.v3+json'
+                }
+            }
+        );
+        
+        if (!response.ok) {
+            throw new Error(`GitHub API error: ${response.statusText}`);
+        }
+
+        const repos = await response.json();
+        
+        const portfolioProjects = await Promise.all(repos.map(async (repo) => {
+            const topicsResponse = await fetch(
+                `https://api.github.com/repos/${githubUsername}/${repo.name}/topics`,
+                {
+                    headers: {
+                        'Authorization': `Bearer ${githubToken}`,
+                        'Accept': 'application/vnd.github.mercy-preview+json'
+                    }
+                }
+            );
+            const topicsData = await topicsResponse.json();
+            return {
+                ...repo,
+                topics: topicsData.names || []
+            };
+        }));
+
+        const filteredProjects = portfolioProjects.filter(repo => 
+            repo.topics.includes('portfolio')
+        );
+
+        const savedProjects = [];
+        const errors = [];
+
+        for (const repo of filteredProjects) {
+            try {
+                const projectData = {
+                    title: repo.name,
+                    description: repo.description || 'No description available',
+                    github: repo.html_url,
+                    liveDemo: repo.homepage || '',
+                    techStack: repo.topics || [],
+                    importedFromGithub: true
+                };
+
+                const existingProject = await Project.findOne({ 
+                    github: repo.html_url 
+                });
+
+                if (!existingProject) {
+                    const newProject = new Project(projectData);
+                    await newProject.save();
+                    savedProjects.push(newProject);
+                }
+            } catch (err) {
+                errors.push(`Failed to import ${repo.name}: ${err.message}`);
+            }
+        }
+
+        res.json({
+            message: 'GitHub projects import completed',
+            imported: savedProjects.length,
+            projects: savedProjects,
+            errors: errors
+        });
+
+    } catch (error) {
+        res.status(500).json({ 
+            message: 'Failed to import GitHub projects',
+            error: error.message 
+        });
+    }
+});
+
+// ...existing code...
 
 module.exports = router;
