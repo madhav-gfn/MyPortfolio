@@ -47,7 +47,28 @@ project01/
 
 ## 👤 Author & Contributors
 
-- [madhav-gfn](https://github.com/madhav-gfn) (owner, main contributor)
+- **Name:** Madhav Mishra
+- **Email:** madmishra72@gmail.com
+- **Phone:** +91-9536068062
+- **LinkedIn:** [madhav-mishra-4a0a62286](https://linkedin.com/in/madhav-mishra-4a0a62286/)
+- **GitHub:** [madhav-gfn](https://github.com/madhav-gfn)
+
+## 🎓 Education
+
+- **B.Tech in Computer Science and Engineering**
+  - *Human Computer Interaction & Gaming Technology*
+  - Indian Institute Of Information Technology, Nagpur
+  - August 2023 – Present
+  - Relevant Coursework: Data Structures & Algorithms, Operating Systems, Database Management Systems, Human Computer Interaction, Software Engineering
+
+## 💻 Technical Skills
+
+- **Languages:** Python, Java, JavaScript, C++, C, C#
+- **Web & Backend:** Node.js, Express.js, React, HTML, CSS, Bootstrap
+- **Databases:** MySQL, MongoDB, SQL, file I/O persistence
+- **Systems & Design:** Scalable storage & query concepts, modular architecture, OOP
+- **Cloud & Tools:** AWS, Azure, Google Cloud, Git, Agile, DevOps
+- **Other:** Unity, game systems, performance-focused engineering
 
 ---
 

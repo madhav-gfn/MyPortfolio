@@ -52,26 +52,26 @@ const Contact = () => {
     {
       icon: HiMail,
       label: 'Email',
-      value: 'hello@yourname.com',
-      href: 'mailto:hello@yourname.com',
+      value: 'madmishra72@gmail.com',
+      href: 'mailto:madmishra72@gmail.com',
     },
     {
       icon: HiPhone,
       label: 'Phone',
-      value: '+1 (555) 123-4567',
-      href: 'tel:+15551234567',
+      value: '+91-9536068062',
+      href: 'tel:+919536068062',
     },
     {
       icon: HiLocationMarker,
       label: 'Location',
-      value: 'Mumbai, Maharashtra, India',
+      value: 'Nagpur, Maharashtra, India',
       href: null,
     },
   ];
 
   const socialLinks = [
-    { icon: FaGithub, href: '#', label: 'GitHub', color: 'hover:text-gray-400' },
-    { icon: FaLinkedin, href: '#', label: 'LinkedIn', color: 'hover:text-blue-400' },
+    { icon: FaGithub, href: 'https://github.com/madhav-gfn', label: 'GitHub', color: 'hover:text-gray-400' },
+    { icon: FaLinkedin, href: 'https://linkedin.com/in/madhav-mishra-4a0a62286/', label: 'LinkedIn', color: 'hover:text-blue-400' },
     { icon: FaTwitter, href: '#', label: 'Twitter', color: 'hover:text-sky-400' },
     { icon: FaInstagram, href: '#', label: 'Instagram', color: 'hover:text-pink-400' },
   ];
