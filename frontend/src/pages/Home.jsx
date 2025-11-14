@@ -4,13 +4,12 @@ import { Link } from 'react-router-dom';
 import { HiArrowRight, HiCode, HiMail, HiDocumentText } from 'react-icons/hi';
 import { FaGithub, FaLinkedin, FaTwitter, FaInstagram } from 'react-icons/fa';
 
-// Profile image placeholder - replace with actual image
-const profileImage = "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop&crop=face";
+const profileImage = "https://your-new-image-url.com/photo.jpg"; // <-- update to your actual photo URL
 
 const Home = () => {
   const socialLinks = [
-    { icon: FaGithub, href: '#', label: 'GitHub' },
-    { icon: FaLinkedin, href: '#', label: 'LinkedIn' },
+    { icon: FaGithub, href: 'https://github.com/madhav-gfn', label: 'GitHub' },
+    { icon: FaLinkedin, href: 'https://linkedin.com/in/madhav-mishra-4a0a62286/', label: 'LinkedIn' },
     { icon: FaTwitter, href: '#', label: 'Twitter' },
     { icon: FaInstagram, href: '#', label: 'Instagram' },
   ];
@@ -77,7 +76,7 @@ const Home = () => {
             <h1 className="text-4xl md:text-6xl font-display font-bold mb-4">
               Hi, I'm{' '}
               <span className="bg-gradient-to-r from-primary-500 via-accent-500 to-primary-500 bg-clip-text text-transparent animate-shimmer bg-[length:200%_auto]">
-                Your Name
+                Madhav Mishra
               </span>
             </h1>
             <p className="text-xl md:text-2xl text-gray-300 font-light">

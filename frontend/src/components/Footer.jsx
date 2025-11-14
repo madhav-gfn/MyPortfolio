@@ -16,8 +16,8 @@ const Footer = () => {
   ];
 
   const socialLinks = [
-    { icon: FaGithub, href: '#', label: 'GitHub' },
-    { icon: FaLinkedin, href: '#', label: 'LinkedIn' },
+    { icon: FaGithub, href: 'https://github.com/madhav-gfn', label: 'GitHub' },
+    { icon: FaLinkedin, href: 'https://linkedin.com/in/madhav-mishra-4a0a62286/', label: 'LinkedIn' },
     { icon: FaTwitter, href: '#', label: 'Twitter' },
     { icon: FaInstagram, href: '#', label: 'Instagram' },
   ];
@@ -66,15 +66,15 @@ const Footer = () => {
                 <div className="flex items-center gap-3 text-gray-400">
                   <HiMail className="w-4 h-4 text-primary-400" />
                   <a
-                    href="mailto:hello@yourname.com"
+                    href="mailto:madmishra72@gmail.com"
                     className="hover:text-primary-400 transition-colors"
                   >
-                    hello@yourname.com
+                    madmishra72@gmail.com
                   </a>
                 </div>
                 <div className="flex items-center gap-3 text-gray-400">
                   <HiLocationMarker className="w-4 h-4 text-primary-400" />
-                  <span>Mumbai, Maharashtra, India</span>
+                  <span>Nagpur, Maharashtra, India</span>
                 </div>
               </motion.div>
             </div>
