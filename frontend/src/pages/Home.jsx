@@ -104,14 +104,14 @@ const Home = () => {
           >
             <Link
               to="/projects"
-              className="group px-8 py-4 bg-gradient-to-r from-primary-500 to-primary-600 text-white rounded-full font-medium transition-all duration-300 hover:shadow-glow-primary transform hover:scale-105 flex items-center gap-2"
+              className="cursor-target group px-8 py-4 bg-black border border-white text-white rounded-full font-medium transition-all duration-300 flex items-center gap-2"
             >
               View Projects
               <HiArrowRight className="group-hover:translate-x-1 transition-transform" />
             </Link>
             <Link
               to="/contact"
-              className="group px-8 py-4 border border-accent-500 text-accent-500 rounded-full font-medium transition-all duration-300 hover:bg-accent-500 hover:text-dark-900 hover:shadow-glow-accent transform hover:scale-105 flex items-center gap-2"
+              className="cursor-target group px-8 py-4 border border-white text-white rounded-full font-medium transition-all duration-300 flex items-center gap-2"
             >
               Get In Touch
               <HiMail className="group-hover:scale-110 transition-transform" />
@@ -171,18 +171,18 @@ const Home = () => {
               >
                 <Link
                   to={action.path}
-                  className="block p-8 rounded-2xl bg-dark-800/50 backdrop-blur-sm border border-gray-700/50 hover:border-primary-500/50 transition-all duration-300 hover:shadow-glow-lg"
+                  className="cursor-target block p-8 rounded-2xl bg-dark-800/50 backdrop-blur-sm border border-gray-700/50 transition-all duration-300"
                 >
                   <div className={`w-16 h-16 rounded-xl bg-gradient-to-r ${action.gradient} flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300`}>
                     <action.icon className="w-8 h-8 text-white" />
                   </div>
-                  <h3 className="text-xl font-semibold mb-2 group-hover:text-primary-400 transition-colors">
+                  <h3 className="text-xl font-semibold mb-2 transition-colors">
                     {action.title}
                   </h3>
-                  <p className="text-gray-400 group-hover:text-gray-300 transition-colors">
+                  <p className="text-gray-400 transition-colors">
                     {action.description}
                   </p>
-                  <div className="mt-4 text-primary-400 opacity-0 group-hover:opacity-100 transition-opacity">
+                  <div className="mt-4 text-white transition-opacity">
                     <HiArrowRight className="w-5 h-5" />
                   </div>
                 </Link>
@@ -219,8 +219,7 @@ const Home = () => {
                 whileInView={{ scale: 1, opacity: 1 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1 }}
-                whileHover={{ scale: 1.1, y: -2 }}
-                className="px-4 py-2 bg-dark-700/50 border border-primary-500/30 rounded-full text-sm font-medium hover:bg-primary-500/10 hover:border-primary-500/60 transition-all duration-200"
+                className="cursor-target px-4 py-2 bg-dark-700/50 border border-white/30 rounded-full text-sm font-medium transition-all duration-200"
               >
                 {tech}
               </motion.span>

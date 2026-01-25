@@ -8,20 +8,20 @@ export default {
     extend: {
       colors: {
         primary: {
-          500: '#7C5CFF',
-          600: '#6B46FF',
-          700: '#5A3BDB',
+          500: '#000000',
+          600: '#1a1a1a',
+          700: '#333333',
         },
         accent: {
-          500: '#00E0A1',
-          600: '#00C78A',
-          700: '#00AD73',
+          500: '#ffffff',
+          600: '#f5f5f5',
+          700: '#e5e5e5',
         },
         dark: {
-          900: '#0D1117',
-          800: '#161B22',
-          700: '#21262D',
-          600: '#30363D',
+          900: '#000000',
+          800: '#0a0a0a',
+          700: '#1a1a1a',
+          600: '#2a2a2a',
         }
       },
       fontFamily: {
@@ -30,10 +30,10 @@ export default {
         serif: ['Playfair Display', 'serif'],
       },
       boxShadow: {
-        'glow-primary': '0 0 20px rgba(124, 92, 255, 0.5)',
-        'glow-accent': '0 0 20px rgba(0, 224, 161, 0.5)',
-        'glow-lg': '0 0 40px rgba(124, 92, 255, 0.3)',
-        'glow-xl': '0 0 60px rgba(124, 92, 255, 0.2)',
+        'glow-primary': '0 0 20px rgba(255, 255, 255, 0.3)',
+        'glow-accent': '0 0 20px rgba(255, 255, 255, 0.2)',
+        'glow-lg': '0 0 40px rgba(255, 255, 255, 0.2)',
+        'glow-xl': '0 0 60px rgba(255, 255, 255, 0.1)',
       },
       backdropBlur: {
         'xs': '2px',

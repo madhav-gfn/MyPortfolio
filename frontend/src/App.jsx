@@ -15,9 +15,11 @@ import About from './pages/About';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import ParticlesBackground from './components/ParticlesBackground';
-
+import TargetCursor from './TargetCursor';
+import SkeletonGameOfLife from './components/SkeletonGameOfLife';
 // Styles
 import './App.css';
+
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -33,7 +35,14 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <Router>
-        <div className="min-h-screen bg-gradient-to-br from-dark-900 via-dark-800 to-dark-900 text-white relative overflow-hidden">
+        <div className="min-h-screen bg-black text-white relative overflow-hidden pr-20">
+          <TargetCursor 
+            spinDuration={2}
+            hideDefaultCursor
+            parallaxOn
+            hoverDuration={0.2}
+          />
+          <SkeletonGameOfLife />
           <ParticlesBackground />
           <Navbar />
           
@@ -54,9 +63,9 @@ function App() {
             position="bottom-right"
             toastOptions={{
               style: {
-                background: 'rgba(33, 38, 45, 0.9)',
+                background: 'rgba(26, 26, 26, 0.9)',
                 color: '#fff',
-                border: '1px solid rgba(124, 92, 255, 0.3)',
+                border: '1px solid rgba(255, 255, 255, 0.3)',
                 backdropFilter: 'blur(10px)',
               },
             }}

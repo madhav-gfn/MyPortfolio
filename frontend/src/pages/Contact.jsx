@@ -205,13 +205,11 @@ const Contact = () => {
                 <motion.button
                   type="submit"
                   disabled={isSubmitting || contactMutation.isLoading}
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  className={`w-full py-3 px-6 rounded-xl font-medium transition-all duration-200 flex items-center justify-center gap-2 ${
+                  className={`cursor-target w-full py-3 px-6 rounded-xl font-medium transition-all duration-200 flex items-center justify-center gap-2 ${
                     isSubmitting || contactMutation.isLoading
                       ? 'bg-gray-600 cursor-not-allowed'
-                      : 'bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700 shadow-glow-primary hover:shadow-glow-lg'
-                  } text-white`}
+                      : 'bg-black border border-white text-white'
+                  }`}
                 >
                   {isSubmitting || contactMutation.isLoading ? (
                     <>
@@ -256,7 +254,7 @@ const Contact = () => {
                     {info.href ? (
                       <a
                         href={info.href}
-                        className="text-white hover:text-primary-400 transition-colors font-medium"
+                        className="cursor-target text-white transition-colors font-medium"
                       >
                         {info.value}
                       </a>
@@ -279,9 +277,7 @@ const Contact = () => {
                     initial={{ opacity: 0, scale: 0 }}
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ delay: 0.6 + index * 0.1 }}
-                    whileHover={{ scale: 1.1, y: -2 }}
-                    whileTap={{ scale: 0.95 }}
-                    className={`w-12 h-12 bg-dark-700/50 rounded-xl border border-gray-600/50 flex items-center justify-center text-gray-400 transition-all duration-200 ${social.color} hover:border-current`}
+                    className={`cursor-target w-12 h-12 bg-dark-700/50 rounded-xl border border-gray-600/50 flex items-center justify-center text-gray-400 transition-all duration-200`}
                     aria-label={social.label}
                   >
                     <social.icon className="w-5 h-5" />

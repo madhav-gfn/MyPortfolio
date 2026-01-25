@@ -63,10 +63,10 @@ const Projects = () => {
             <button
               key={tech}
               onClick={() => setFilter(tech)}
-              className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
+              className={`cursor-target px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
                 filter === tech
-                  ? 'bg-primary-500 text-white shadow-glow-primary'
-                  : 'bg-dark-700/50 text-gray-300 hover:bg-primary-500/20 hover:text-primary-400 border border-gray-600/50'
+                  ? 'bg-white text-black'
+                  : 'bg-dark-700/50 text-gray-300 border border-gray-600/50'
               }`}
             >
               {tech === 'all' ? 'All Projects' : tech}
@@ -113,7 +113,7 @@ const Projects = () => {
             <p className="text-gray-400 text-lg">No projects found for this filter</p>
             <button
               onClick={() => setFilter('all')}
-              className="mt-4 text-primary-400 hover:text-primary-300 font-medium"
+              className="cursor-target mt-4 text-white font-medium"
             >
               Show all projects
             </button>
@@ -135,7 +135,7 @@ const ProjectCard = ({ project, onClick }) => {
   return (
     <div
       onClick={onClick}
-      className="relative cursor-pointer bg-dark-800/50 backdrop-blur-sm rounded-2xl border border-gray-700/50 hover:border-primary-500/50 transition-all duration-300 overflow-hidden group hover:shadow-glow-lg"
+      className="cursor-target relative bg-dark-800/50 backdrop-blur-sm rounded-2xl border border-gray-700/50 transition-all duration-300 overflow-hidden group"
     >
       {/* Project Thumbnail */}
       <div className="aspect-video bg-gradient-to-br from-primary-500/20 to-accent-500/20 relative overflow-hidden">
@@ -155,7 +155,7 @@ const ProjectCard = ({ project, onClick }) => {
 
       {/* Content */}
       <div className="p-6">
-        <h3 className="text-xl font-semibold mb-2 group-hover:text-primary-400 transition-colors line-clamp-1">
+        <h3 className="text-xl font-semibold mb-2 transition-colors line-clamp-1">
           {project.title}
         </h3>
         
@@ -168,7 +168,7 @@ const ProjectCard = ({ project, onClick }) => {
           {project.techStack?.slice(0, 3).map((tech, index) => (
             <span
               key={index}
-              className="px-2 py-1 bg-primary-500/10 text-primary-400 text-xs rounded-md border border-primary-500/20"
+              className="px-2 py-1 bg-white/10 text-white text-xs rounded-md border border-white/20"
             >
               {tech}
             </span>
@@ -188,7 +188,7 @@ const ProjectCard = ({ project, onClick }) => {
               target="_blank"
               rel="noopener noreferrer"
               onClick={(e) => e.stopPropagation()}
-              className="flex items-center gap-2 text-gray-400 hover:text-white transition-colors"
+              className="cursor-target flex items-center gap-2 text-gray-400 transition-colors"
             >
               <FaGithub className="w-4 h-4" />
               <span className="text-sm">Code</span>
@@ -200,7 +200,7 @@ const ProjectCard = ({ project, onClick }) => {
               target="_blank"
               rel="noopener noreferrer"
               onClick={(e) => e.stopPropagation()}
-              className="flex items-center gap-2 text-accent-400 hover:text-accent-300 transition-colors"
+              className="cursor-target flex items-center gap-2 text-white transition-colors"
             >
               <HiExternalLink className="w-4 h-4" />
               <span className="text-sm">Live Demo</span>
