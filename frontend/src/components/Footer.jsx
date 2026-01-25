@@ -38,7 +38,7 @@ const Footer = () => {
               >
                 <Link
                   to="/"
-                  className="text-2xl font-display font-bold bg-gradient-to-r from-primary-500 to-accent-500 bg-clip-text text-transparent"
+                  className="cursor-target text-2xl font-display font-bold text-white"
                 >
                   Portfolio
                 </Link>
@@ -67,7 +67,7 @@ const Footer = () => {
                   <HiMail className="w-4 h-4 text-primary-400" />
                   <a
                     href="mailto:madmishra72@gmail.com"
-                    className="hover:text-primary-400 transition-colors"
+                    className="cursor-target text-gray-400 transition-colors"
                   >
                     madmishra72@gmail.com
                   </a>
@@ -101,9 +101,9 @@ const Footer = () => {
                   >
                     <Link
                       to={link.path}
-                      className="text-gray-400 hover:text-primary-400 transition-colors duration-200 flex items-center gap-2 group"
+                      className="cursor-target text-gray-400 transition-colors duration-200 flex items-center gap-2 group"
                     >
-                      <span className="w-1 h-1 bg-primary-400 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"></span>
+                      <span className="w-1 h-1 bg-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity"></span>
                       {link.label}
                     </Link>
                   </motion.li>
@@ -131,9 +131,7 @@ const Footer = () => {
                     whileInView={{ opacity: 1, scale: 1 }}
                     viewport={{ once: true }}
                     transition={{ delay: 0.6 + index * 0.1 }}
-                    whileHover={{ scale: 1.1, y: -2 }}
-                    whileTap={{ scale: 0.95 }}
-                    className="w-10 h-10 bg-dark-800 border border-gray-700/50 rounded-xl flex items-center justify-center text-gray-400 hover:text-primary-400 hover:border-primary-400/50 hover:bg-primary-400/10 transition-all duration-200"
+                    className="cursor-target w-10 h-10 bg-dark-800 border border-gray-700/50 rounded-xl flex items-center justify-center text-gray-400 transition-all duration-200"
                     aria-label={social.label}
                   >
                     <social.icon className="w-4 h-4" />
@@ -159,7 +157,7 @@ const Footer = () => {
                     placeholder="your@email.com"
                     className="flex-1 px-3 py-2 bg-dark-700 border border-gray-600 rounded-lg text-sm text-white placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-primary-500 focus:border-primary-500"
                   />
-                  <button className="px-3 py-2 bg-primary-500 hover:bg-primary-600 text-white text-sm rounded-lg transition-colors">
+                  <button className="cursor-target px-3 py-2 bg-white text-black text-sm rounded-lg transition-colors">
                     →
                   </button>
                 </div>
@@ -189,10 +187,10 @@ const Footer = () => {
             </div>
             
             <div className="flex items-center gap-6 text-sm text-gray-400">
-              <button className="hover:text-primary-400 transition-colors">
+              <button className="cursor-target text-gray-400 transition-colors">
                 Privacy Policy
               </button>
-              <button className="hover:text-primary-400 transition-colors">
+              <button className="cursor-target text-gray-400 transition-colors">
                 Terms of Service
               </button>
             </div>

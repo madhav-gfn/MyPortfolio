@@ -9,16 +9,16 @@
 }
 
 ::-webkit-scrollbar-track {
-  background: #0D1117;
+  background: #000000;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, #7C5CFF, #00E0A1);
+  background: #333333;
   border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(180deg, #6B46FF, #00C78A);
+  background: #555555;
 }
 
 /* Custom Utilities */
@@ -45,12 +45,12 @@
   }
 
   .text-shadow-glow {
-    text-shadow: 0 0 20px rgba(124, 92, 255, 0.5);
+    text-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
   }
 
   /* Glassmorphism effect */
   .glass {
-    background: rgba(33, 38, 45, 0.4);
+    background: rgba(26, 26, 26, 0.8);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
     border: 1px solid rgba(255, 255, 255, 0.1);
@@ -67,12 +67,7 @@
   }
 
   .animate-shimmer {
-    background: linear-gradient(
-      90deg,
-      transparent,
-      rgba(124, 92, 255, 0.1),
-      transparent
-    );
+    background: #333333;
     background-size: 200% 100%;
     animation: shimmer 2s infinite;
   }
@@ -80,10 +75,10 @@
   /* Custom glow animations */
   @keyframes glow-pulse {
     0%, 100% {
-      box-shadow: 0 0 20px rgba(124, 92, 255, 0.4);
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
     }
     50% {
-      box-shadow: 0 0 40px rgba(124, 92, 255, 0.8);
+      box-shadow: 0 0 40px rgba(255, 255, 255, 0.4);
     }
   }
 
@@ -94,17 +89,14 @@
   /* Smooth focus styles */
   .focus-visible\:ring-primary:focus-visible {
     outline: none;
-    ring: 2px solid rgb(124, 92, 255);
+    ring: 2px solid rgb(255, 255, 255);
     ring-offset: 2px;
-    ring-offset-color: rgb(13, 17, 23);
+    ring-offset-color: rgb(0, 0, 0);
   }
 
   /* Custom gradient text */
   .gradient-text {
-    background: linear-gradient(135deg, #7C5CFF 0%, #00E0A1 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    color: #ffffff;
   }
 
   /* Loading dots animation */
@@ -145,19 +137,18 @@
 
   /* Particle glow effect */
   .particle-glow {
-    filter: drop-shadow(0 0 10px rgba(124, 92, 255, 0.5));
+    filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.5));
   }
 
   /* Custom border gradients */
   .border-gradient {
-    border: 1px solid transparent;
-    background: linear-gradient(#161B22, #161B22) padding-box,
-                linear-gradient(135deg, #7C5CFF, #00E0A1) border-box;
+    border: 1px solid #333333;
+    background: #000000;
   }
 
   .border-gradient:hover {
-    background: linear-gradient(#161B22, #161B22) padding-box,
-                linear-gradient(135deg, #6B46FF, #00C78A) border-box;
+    border: 1px solid #555555;
+    background: #0a0a0a;
   }
 }
 
@@ -169,25 +160,25 @@
 
   body {
     font-family: 'Inter', system-ui, sans-serif;
-    background: linear-gradient(135deg, #0D1117 0%, #161B22 50%, #0D1117 100%);
+    background: #000000;
     color: #ffffff;
     overflow-x: hidden;
   }
 
   /* Focus styles */
   *:focus-visible {
-    outline: 2px solid #7C5CFF;
+    outline: 2px solid #ffffff;
     outline-offset: 2px;
   }
 
   /* Selection styles */
   ::selection {
-    background: rgba(124, 92, 255, 0.3);
+    background: rgba(255, 255, 255, 0.2);
     color: #ffffff;
   }
 
   ::-moz-selection {
-    background: rgba(124, 92, 255, 0.3);
+    background: rgba(255, 255, 255, 0.2);
     color: #ffffff;
   }
 }
@@ -196,24 +187,24 @@
 @layer components {
   /* Button variants */
   .btn-primary {
-    @apply px-6 py-3 bg-gradient-to-r from-primary-500 to-primary-600 text-white rounded-xl font-medium transition-all duration-300 hover:shadow-glow-primary hover:scale-105 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 focus:ring-offset-dark-900;
+    @apply px-6 py-3 bg-black text-white border border-white rounded-xl font-medium transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-black;
   }
 
   .btn-secondary {
-    @apply px-6 py-3 border border-accent-500 text-accent-500 rounded-xl font-medium transition-all duration-300 hover:bg-accent-500 hover:text-dark-900 hover:shadow-glow-accent hover:scale-105 focus:outline-none focus:ring-2 focus:ring-accent-500 focus:ring-offset-2 focus:ring-offset-dark-900;
+    @apply px-6 py-3 border border-white text-white rounded-xl font-medium transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-black;
   }
 
   .btn-ghost {
-    @apply px-6 py-3 text-gray-300 rounded-xl font-medium transition-all duration-300 hover:bg-gray-700/50 hover:text-white focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 focus:ring-offset-dark-900;
+    @apply px-6 py-3 text-gray-300 rounded-xl font-medium transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 focus:ring-offset-black;
   }
 
   /* Card styles */
   .card {
-    @apply bg-dark-800/50 backdrop-blur-sm rounded-2xl border border-gray-700/50 p-6 transition-all duration-300 hover:border-primary-500/50 hover:shadow-glow-lg;
+    @apply bg-dark-800/50 backdrop-blur-sm rounded-2xl border border-gray-700/50 p-6 transition-all duration-300;
   }
 
   .card-interactive {
-    @apply card cursor-pointer hover:scale-105 hover:-translate-y-2;
+    @apply card cursor-pointer;
   }
 
   /* Input styles */
@@ -252,7 +243,7 @@
 
   /* Navigation styles */
   .nav-link {
-    @apply px-3 py-2 rounded-md text-sm font-medium transition-all duration-200 relative hover:text-white;
+    @apply px-3 py-2 rounded-md text-sm font-medium transition-all duration-200 relative;
   }
 
   .nav-link-active {
