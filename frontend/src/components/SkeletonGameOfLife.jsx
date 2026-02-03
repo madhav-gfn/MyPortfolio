@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useState } from 'react';
 
-const SkeletonGameOfLife = () => {
+const SkeletonGameOfLife = ({ onActiveChange }) => {
   const canvasRef = useRef(null);
   const [isActive, setIsActive] = useState(false);
   const animationIdRef = useRef(null);
@@ -131,12 +131,14 @@ const SkeletonGameOfLife = () => {
     setupGrid();
     isRunningRef.current = true;
     setIsActive(true);
+    if (onActiveChange) onActiveChange(true);
     animate(0);
   };
 
   const disableSimulation = () => {
     isRunningRef.current = false;
     setIsActive(false);
+    if (onActiveChange) onActiveChange(false);
     if (animationIdRef.current) {
       cancelAnimationFrame(animationIdRef.current);
     }
@@ -172,14 +174,14 @@ const SkeletonGameOfLife = () => {
             onClick={enableSimulation}
             className="cursor-target px-4 py-2 bg-gray-600 text-white rounded-lg font-medium shadow-lg transition-transform active:scale-95"
           >
-            💀 Game of Life
+            💀
           </button>
         ) : (
           <button
             onClick={disableSimulation}
             className="cursor-target px-4 py-2 bg-red-600 text-white rounded-lg font-medium shadow-lg transition-transform active:scale-95"
           >
-            Stop Simulation
+            Stop
           </button>
         )}
       </div>

@@ -46,98 +46,143 @@ const Home = () => {
       className="min-h-screen pt-16"
     >
       {/* Hero Section */}
-      <section className="min-h-screen flex items-center justify-center px-4 sm:px-6 lg:px-8">
-        <div className="max-w-4xl mx-auto text-center">
-          {/* Profile Image */}
-          <motion.div
-            initial={{ scale: 0, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
-            className="mb-8"
-          >
-            <div className="relative w-40 h-40 mx-auto">
-              <div className="absolute inset-0 bg-gradient-to-r from-primary-500 to-accent-500 rounded-full animate-pulse"></div>
-              <img
-                src={profileImage}
-                alt="Profile"
-                className="relative w-full h-full rounded-full object-cover border-4 border-white/20 shadow-glow-primary animate-float"
-              />
-              <div className="absolute inset-0 rounded-full bg-gradient-to-t from-transparent to-primary-500/20"></div>
-            </div>
-          </motion.div>
-
-          {/* Name and Title */}
-          <motion.div
-            initial={{ y: 50, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ delay: 0.4 }}
-            className="mb-6"
-          >
-            <h1 className="text-4xl md:text-6xl font-display font-bold mb-4">
-              Hi, I'm{' '}
-              <span className="bg-gradient-to-r from-primary-500 via-accent-500 to-primary-500 bg-clip-text text-transparent animate-shimmer bg-[length:200%_auto]">
-                Madhav Mishra
-              </span>
-            </h1>
-            <p className="text-xl md:text-2xl text-gray-300 font-light">
-              Machine Learning Engineer • Full-stack Tinkerer • Curious Creator
-            </p>
-          </motion.div>
-
-          {/* Description */}
-          <motion.p
-            initial={{ y: 30, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ delay: 0.6 }}
-            className="text-lg text-gray-400 max-w-2xl mx-auto mb-8 leading-relaxed"
-          >
-            Passionate about creating innovative solutions at the intersection of AI and web development. 
-            I love turning complex problems into elegant, scalable solutions.
-          </motion.p>
-
-          {/* CTA Buttons */}
-          <motion.div
-            initial={{ y: 30, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ delay: 0.8 }}
-            className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12"
-          >
-            <Link
-              to="/projects"
-              className="cursor-target group px-8 py-4 bg-black border border-white text-white rounded-full font-medium transition-all duration-300 flex items-center gap-2"
+      <section className="min-h-screen flex items-center px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto w-full">
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            {/* Left Side - Text Content */}
+            <motion.div
+              initial={{ x: -100, opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              transition={{ duration: 0.8 }}
+              className="space-y-8"
             >
-              View Projects
-              <HiArrowRight className="group-hover:translate-x-1 transition-transform" />
-            </Link>
-            <Link
-              to="/contact"
-              className="cursor-target group px-8 py-4 border border-white text-white rounded-full font-medium transition-all duration-300 flex items-center gap-2"
-            >
-              Get In Touch
-              <HiMail className="group-hover:scale-110 transition-transform" />
-            </Link>
-          </motion.div>
+              <div className="space-y-4">
+                <motion.p
+                  initial={{ y: 20, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  transition={{ delay: 0.2 }}
+                  className="text-gray-400 text-lg"
+                >
+                  Hello, I'm
+                </motion.p>
+                
+                <motion.h1
+                  initial={{ y: 30, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  transition={{ delay: 0.3 }}
+                  className="text-5xl md:text-7xl font-display font-bold leading-tight"
+                >
+                  Madhav
+                  <br />
+                  <span className="text-white">Mishra</span>
+                </motion.h1>
+                
+                <motion.div
+                  initial={{ y: 20, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  transition={{ delay: 0.4 }}
+                  className="space-y-2"
+                >
+                  <p className="text-xl md:text-2xl text-gray-300 font-light">
+                    Machine Learning Engineer
+                  </p>
+                  <p className="text-xl md:text-2xl text-gray-300 font-light">
+                    Full-stack Developer
+                  </p>
+                </motion.div>
+              </div>
 
-          {/* Social Links */}
-          <motion.div
-            initial={{ y: 20, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ delay: 1 }}
-            className="flex justify-center space-x-6"
-          >
-            {socialLinks.map((social, index) => (
-              <motion.a
-                key={social.label}
-                href={social.href}
-                whileHover={{ scale: 1.2, y: -2 }}
-                whileTap={{ scale: 0.95 }}
-                className="text-gray-400 hover:text-primary-400 transition-colors duration-200"
-                aria-label={social.label}
+              <motion.p
+                initial={{ y: 20, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ delay: 0.5 }}
+                className="text-lg text-gray-400 max-w-lg leading-relaxed"
               >
-                <social.icon className="w-6 h-6" />
-              </motion.a>
-            ))}
-          </motion.div>
+                Passionate about creating innovative solutions at the intersection of AI and web development. 
+                I love turning complex problems into elegant, scalable solutions.
+              </motion.p>
+
+              {/* CTA Buttons */}
+              <motion.div
+                initial={{ y: 30, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ delay: 0.6 }}
+                className="flex flex-wrap gap-4"
+              >
+                <Link
+                  to="/projects"
+                  className="cursor-target group px-8 py-4 bg-white text-black rounded-full font-medium transition-all duration-300 flex items-center gap-2"
+                >
+                  View Projects
+                  <HiArrowRight className="group-hover:translate-x-1 transition-transform" />
+                </Link>
+                <Link
+                  to="/contact"
+                  className="cursor-target group px-8 py-4 border border-white text-white rounded-full font-medium transition-all duration-300 flex items-center gap-2"
+                >
+                  Get In Touch
+                  <HiMail className="group-hover:scale-110 transition-transform" />
+                </Link>
+              </motion.div>
+
+              {/* Social Links */}
+              <motion.div
+                initial={{ y: 20, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ delay: 0.7 }}
+                className="flex space-x-6"
+              >
+                {socialLinks.map((social, index) => (
+                  <motion.a
+                    key={social.label}
+                    href={social.href}
+                    className="cursor-target text-gray-400 transition-colors duration-200"
+                    aria-label={social.label}
+                  >
+                    <social.icon className="w-6 h-6" />
+                  </motion.a>
+                ))}
+              </motion.div>
+            </motion.div>
+
+            {/* Right Side - Profile */}
+            <motion.div
+              initial={{ x: 100, opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+              className="relative flex justify-center lg:justify-end"
+            >
+              <div className="relative">
+                {/* Background Elements */}
+                <div className="absolute inset-0 bg-white/5 rounded-3xl transform rotate-6"></div>
+                <div className="absolute inset-0 bg-white/10 rounded-3xl transform -rotate-3"></div>
+                
+                {/* Profile Image Container */}
+                <div className="relative w-80 h-96 bg-gradient-to-br from-white/20 to-white/5 rounded-3xl p-8 backdrop-blur-sm border border-white/10">
+                  <div className="w-full h-full rounded-2xl overflow-hidden bg-gradient-to-br from-gray-800 to-gray-900 flex items-center justify-center">
+                    <div className="text-6xl text-white/50">👨💻</div>
+                  </div>
+                  
+                  {/* Floating Elements */}
+                  <motion.div
+                    animate={{ y: [-10, 10, -10] }}
+                    transition={{ duration: 4, repeat: Infinity }}
+                    className="absolute -top-4 -right-4 w-16 h-16 bg-white/10 rounded-2xl backdrop-blur-sm border border-white/20 flex items-center justify-center"
+                  >
+                    <span className="text-2xl">⚡</span>
+                  </motion.div>
+                  
+                  <motion.div
+                    animate={{ y: [10, -10, 10] }}
+                    transition={{ duration: 3, repeat: Infinity, delay: 1 }}
+                    className="absolute -bottom-4 -left-4 w-12 h-12 bg-white/10 rounded-xl backdrop-blur-sm border border-white/20 flex items-center justify-center"
+                  >
+                    <span className="text-lg">🚀</span>
+                  </motion.div>
+                </div>
+              </div>
+            </motion.div>
+          </div>
         </div>
       </section>
 

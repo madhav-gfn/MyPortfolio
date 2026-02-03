@@ -4,7 +4,57 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vite + React</title>
+    <title>Kaan Bhai Portfolio</title>
+    <style>
+      /* BLOOD BUTTON STYLING */
+      .bloody-btn {
+        position: relative;
+        padding: 12px 30px;
+        font-size: 1rem;
+        font-weight: bold;
+        color: #333;
+        background-color: #e0e0e0;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        overflow: hidden;
+        transition: transform 0.1s, background-color 0.8s ease;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+      }
+
+      .bloody-btn:active {
+        transform: scale(0.95);
+      }
+
+      .bloody-btn span {
+        position: relative;
+        z-index: 2;
+        transition: color 0.5s ease;
+      }
+
+      .bloody-btn.soaked {
+        background-color: #8a0303;
+        cursor: default;
+      }
+
+      .bloody-btn.soaked span {
+        color: #ffcccc;
+      }
+
+      .blood-spot {
+        position: absolute;
+        background-color: #8a0303;
+        border-radius: 50%;
+        z-index: 1;
+        transform: scale(0);
+        pointer-events: none;
+        animation: splat 0.3s cubic-bezier(0.17, 0.89, 0.43, 1.49) forwards;
+      }
+
+      @keyframes splat {
+        to { transform: scale(1); }
+      }
+    </style>
   </head>
   <body>
     <div id="root"></div>
