@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Toaster } from 'react-hot-toast';
@@ -14,8 +14,7 @@ import About from './pages/About';
 // Components
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
-import ParticlesBackground from './components/ParticlesBackground';
-import TargetCursor from './TargetCursor';
+import TargetCursor from './components/TargetCursor';
 import SkeletonGameOfLife from './components/SkeletonGameOfLife';
 // Styles
 import './App.css';
@@ -32,6 +31,7 @@ const queryClient = new QueryClient({
 });
 
 function App() {
+  const [gameOfLifeActive, setGameOfLifeActive] = useState(false);
   return (
     <QueryClientProvider client={queryClient}>
       <Router>
@@ -42,8 +42,7 @@ function App() {
             parallaxOn
             hoverDuration={0.2}
           />
-          <SkeletonGameOfLife />
-          <ParticlesBackground />
+          <SkeletonGameOfLife onActiveChange={setGameOfLifeActive} />
           <Navbar />
           
           <main className="relative z-10">
