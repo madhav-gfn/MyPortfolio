@@ -18,6 +18,7 @@ connection.once('open', () => {
 const projectRoutes = require('./routes/project');
 const blogRoutes = require('./routes/blog');
 const contactRoutes = require('./routes/contact');
+const githubRoutes = require('./routes/github');
 const githubSyncScheduler = require('./schedulers/githubSync');
 
 // Start the scheduler
@@ -27,6 +28,7 @@ githubSyncScheduler.start();
 app.use('/api/projects', projectRoutes);
 app.use('/api/blogs', blogRoutes);
 app.use('/api/contact', contactRoutes);
+app.use('/api/github', githubRoutes);
 //server start
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
