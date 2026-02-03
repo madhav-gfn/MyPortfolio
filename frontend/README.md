@@ -10,3 +10,18 @@ Currently, two official plugins are available:
 ## Expanding the ESLint configuration
 
 If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+
+## GitHub Projects Feed
+
+The Projects page pulls repositories directly from the GitHub REST API.
+
+Set these optional environment variables in a `.env` file before running the frontend:
+
+```
+VITE_GITHUB_USERNAME=your-github-username
+VITE_GITHUB_TOKEN=your-github-token
+VITE_GITHUB_PROJECTS_TOPIC=portfolio
+```
+
+- `VITE_GITHUB_TOKEN` is optional but helps avoid rate limits.
+- `VITE_GITHUB_PROJECTS_TOPIC` lets you filter repositories by a GitHub topic.

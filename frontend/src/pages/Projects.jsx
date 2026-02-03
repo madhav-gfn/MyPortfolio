@@ -12,7 +12,7 @@ const Projects = () => {
   const [filter, setFilter] = useState('all');
 
   // Extract unique tech stack items for filtering
-  const allTechs = projects ? [...new Set(projects.flatMap(project => project.techStack))] : [];
+  const allTechs = projects ? [...new Set(projects.flatMap(project => project.techStack || []))] : [];
   const filters = ['all', ...allTechs.slice(0, 6)]; // Limit to 6 most common techs
 
   const filteredProjects = projects?.filter(project => 
@@ -84,7 +84,7 @@ const Projects = () => {
           <AnimatePresence mode="wait">
             {filteredProjects.map((project, index) => (
               <motion.div
-                key={project._id}
+                key={project.id}
                 layout
                 initial={{ scale: 0.8, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}

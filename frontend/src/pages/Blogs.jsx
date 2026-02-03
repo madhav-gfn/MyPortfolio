@@ -132,7 +132,7 @@ const Blogs = () => {
           <AnimatePresence mode="wait">
             {filteredBlogs.map((blog, index) => (
               <motion.div
-                key={blog._id}
+                key={blog.id}
                 layout
                 initial={{ scale: 0.9, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
