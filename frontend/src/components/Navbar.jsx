@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { HiMenu, HiX } from 'react-icons/hi';
@@ -14,6 +14,7 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
   const location = useLocation();
+  const navRef = useRef(null);
 
   const navItems = [
     { path: '/', label: 'Home', icon: homeIcon },
@@ -29,10 +30,18 @@ const Navbar = () => {
 
   return (
     <motion.nav
+      ref={navRef}
       initial={{ x: 100 }}
       animate={{ x: 0, width: isExpanded ? 200 : 80 }}
       onMouseEnter={() => setIsExpanded(true)}
       onMouseLeave={() => setIsExpanded(false)}
+      onFocus={() => setIsExpanded(true)}
+      onBlur={(event) => {
+        if (navRef.current && !navRef.current.contains(event.relatedTarget)) {
+          setIsExpanded(false);
+        }
+      }}
+      aria-expanded={isExpanded}
       className="fixed right-0 top-0 h-full z-50 bg-black/90 backdrop-blur-lg border-l border-white/20 flex flex-col items-center justify-center transition-all duration-300"
     >
       {/* Logo */}
