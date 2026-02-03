@@ -135,7 +135,7 @@ const Navbar = () => {
                   </Link>
                 </motion.div>
               );
-            })}}
+            })}
           </motion.div>
         )}
       </AnimatePresence>
