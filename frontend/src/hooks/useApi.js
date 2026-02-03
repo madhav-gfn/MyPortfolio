@@ -72,10 +72,8 @@ const getProjectsQueryFn = (source) =>
   source === 'github' ? fetchProjectsFromGithub : fetchProjectsFromBackend;
 
 // Projects hooks
-export const useProjects = () => {
-  const source = resolveProjectsSource();
-
 export const useProjects = (options = {}) => {
+  const source = resolveProjectsSource();
   return useQuery({
     queryKey: ['projects', source],
     queryFn: getProjectsQueryFn(source),

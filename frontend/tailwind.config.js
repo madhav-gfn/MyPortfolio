@@ -30,10 +30,10 @@ export default {
         serif: ['Playfair Display', 'serif'],
       },
       boxShadow: {
-        'glow-primary': '0 0 20px rgba(255, 255, 255, 0.3)',
-        'glow-accent': '0 0 20px rgba(255, 255, 255, 0.2)',
-        'glow-lg': '0 0 40px rgba(255, 255, 255, 0.2)',
-        'glow-xl': '0 0 60px rgba(255, 255, 255, 0.1)',
+        'glow-primary': '0 0 20px rgba(255, 0, 0, 0.3)',
+        'glow-accent': '0 0 20px rgba(255, 0, 0, 0.2)',
+        'glow-lg': '0 0 40px rgba(255, 0, 0, 0.2)',
+        'glow-xl': '0 0 60px rgba(255, 0, 0, 0.1)',
       },
       backdropBlur: {
         'xs': '2px',
@@ -49,8 +49,8 @@ export default {
           '50%': { transform: 'translateY(-20px)' },
         },
         glow: {
-          'from': { boxShadow: '0 0 20px rgba(124, 92, 255, 0.5)' },
-          'to': { boxShadow: '0 0 30px rgba(124, 92, 255, 0.8)' },
+          'from': { boxShadow: '0 0 20px rgba(255, 0, 0, 0.5)' },
+          'to': { boxShadow: '0 0 30px rgba(255, 0, 0, 0.8)' },
         },
         shimmer: {
           '0%': { transform: 'translateX(-100%)' },
