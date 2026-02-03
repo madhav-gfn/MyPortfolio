@@ -2,32 +2,72 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { HiExternalLink, HiCode, HiX, HiEye } from 'react-icons/hi';
 import { FaGithub } from 'react-icons/fa';
-import { useProjects } from '../hooks/useApi';
+import { useProjects, useGithubPortfolioProjects } from '../hooks/useApi';
 import Loader from '../components/Loader';
 import ProjectModal from '../components/ProjectModal';
 
 const Projects = () => {
-  const { data: projects, isLoading, error } = useProjects();
+  const projectsSource = import.meta.env.VITE_PROJECTS_SOURCE;
+  const githubUsername = import.meta.env.VITE_GITHUB_USERNAME;
+  const useGithubSource = projectsSource === 'github';
+
+  const { data: projects, isLoading, error } = useProjects({ enabled: !useGithubSource });
+  const {
+    data: githubProjects,
+    isLoading: isGithubLoading,
+    error: githubError,
+  } = useGithubPortfolioProjects(githubUsername, { enabled: useGithubSource });
+
+  const normalizedGithubProjects = githubProjects?.items?.map((repo) => ({
+    id: repo.id,
+    title: repo.name,
+    description: repo.description || 'No description provided yet.',
+    github: repo.html_url,
+    liveDemo: repo.homepage || '',
+    techStack: repo.topics || [],
+    createdAt: repo.created_at,
+    importedFromGithub: true,
+  }));
+
+  const activeProjects = useGithubSource ? normalizedGithubProjects : projects;
+  const activeLoading = useGithubSource ? isGithubLoading : isLoading;
+  const activeError = useGithubSource ? githubError : error;
   const [selectedProject, setSelectedProject] = useState(null);
   const [filter, setFilter] = useState('all');
 
   // Extract unique tech stack items for filtering
-  const allTechs = projects ? [...new Set(projects.flatMap(project => project.techStack))] : [];
+  const allTechs = activeProjects
+    ? [...new Set(activeProjects.flatMap(project => project.techStack || []))]
+    : [];
   const filters = ['all', ...allTechs.slice(0, 6)]; // Limit to 6 most common techs
 
-  const filteredProjects = projects?.filter(project => 
-    filter === 'all' || project.techStack.includes(filter)
+  const filteredProjects = activeProjects?.filter(project => 
+    filter === 'all' || project.techStack?.includes(filter)
   ) || [];
 
-  if (isLoading) return <Loader />;
-  if (error) return (
+  const hasMissingTopics = useGithubSource
+    ? activeProjects?.some(project => !project.techStack || project.techStack.length === 0)
+    : false;
+
+  if (activeLoading) return <Loader />;
+  if (activeError) {
+    const errorStatus = activeError?.response?.status || activeError?.status;
+    const isRateLimited = useGithubSource && errorStatus === 403;
+    return (
     <div className="min-h-screen pt-20 flex items-center justify-center">
       <div className="text-center">
-        <p className="text-red-400 text-lg mb-4">Failed to load projects</p>
-        <p className="text-gray-400">Please try again later</p>
+        <p className="text-red-400 text-lg mb-4">
+          {isRateLimited ? 'GitHub API rate limit reached' : 'Failed to load projects'}
+        </p>
+        <p className="text-gray-400">
+          {isRateLimited
+            ? 'Add a GitHub token or try again later.'
+            : 'Please try again later'}
+        </p>
       </div>
     </div>
   );
+  }
 
   return (
     <motion.div
@@ -74,6 +114,12 @@ const Projects = () => {
           ))}
         </motion.div>
 
+        {useGithubSource && hasMissingTopics && (
+          <div className="mb-6 rounded-2xl border border-amber-500/30 bg-amber-500/10 px-4 py-3 text-sm text-amber-200">
+            Some repositories do not expose topics yet. Add GitHub topics to improve filtering.
+          </div>
+        )}
+
         {/* Projects Grid */}
         <motion.div
           initial={{ y: 50, opacity: 0 }}
@@ -84,7 +130,7 @@ const Projects = () => {
           <AnimatePresence mode="wait">
             {filteredProjects.map((project, index) => (
               <motion.div
-                key={project._id}
+                key={project._id || project.id || project.github}
                 layout
                 initial={{ scale: 0.8, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
