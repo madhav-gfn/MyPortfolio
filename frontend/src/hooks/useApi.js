@@ -1,6 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { projectsApi, blogsApi, contactApi } from '../api/Index';
 import toast from 'react-hot-toast';
+import axiosInstance from '../api/axiosInstance';
 
 const projectsSource = import.meta.env.VITE_PROJECTS_SOURCE?.toLowerCase() || 'backend';
 const githubUsername = import.meta.env.VITE_GITHUB_USERNAME;
@@ -74,10 +75,28 @@ const getProjectsQueryFn = (source) =>
 export const useProjects = () => {
   const source = resolveProjectsSource();
 
+export const useProjects = (options = {}) => {
   return useQuery({
     queryKey: ['projects', source],
     queryFn: getProjectsQueryFn(source),
     staleTime: 5 * 60 * 1000, // 5 minutes
+    enabled: options.enabled ?? true,
+  });
+};
+
+export const useGithubPortfolioProjects = (username, options = {}) => {
+  return useQuery({
+    queryKey: ['github-projects', username],
+    queryFn: async () => {
+      const response = await axiosInstance.get('/github/search', {
+        params: { username },
+      });
+      return response.data;
+    },
+    enabled: !!username && (options.enabled ?? true),
+    staleTime: 30 * 1000, // 30 seconds
+    refetchInterval: 60 * 1000, // 1 minute
+    refetchIntervalInBackground: true,
   });
 };
 
