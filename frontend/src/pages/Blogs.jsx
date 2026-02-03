@@ -11,11 +11,9 @@ const Blogs = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedTag, setSelectedTag] = useState('all');
 
-  // Extract unique tags for filtering
   const allTags = blogs ? [...new Set(blogs.flatMap(blog => blog.tags || []))] : [];
   const tags = ['all', ...allTags];
 
-  // Filter blogs based on search and tags
   const filteredBlogs = blogs?.filter(blog => {
     const matchesSearch = blog.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          blog.content.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -46,8 +44,8 @@ const Blogs = () => {
   if (error) return (
     <div className="min-h-screen pt-20 flex items-center justify-center">
       <div className="text-center">
-        <p className="text-red-400 text-lg mb-4">Failed to load blogs</p>
-        <p className="text-gray-400">Please try again later</p>
+        <p className="text-red-500 text-lg mb-4">Failed to load blogs</p>
+        <p className="text-gray-600 dark:text-gray-400">Please try again later</p>
       </div>
     </div>
   );
@@ -67,9 +65,9 @@ const Blogs = () => {
           className="text-center mb-12"
         >
           <h1 className="text-4xl md:text-5xl font-display font-bold mb-4">
-            My <span className="bg-gradient-to-r from-primary-500 to-accent-500 bg-clip-text text-transparent">Blog</span>
+            My <span className="text-red-500">Blog</span>
           </h1>
-          <p className="text-gray-400 text-lg max-w-2xl mx-auto">
+          <p className="text-gray-600 dark:text-gray-400 text-lg max-w-2xl mx-auto">
             Thoughts, insights, and experiences from my journey in technology, 
             development, and continuous learning.
           </p>
@@ -84,18 +82,18 @@ const Blogs = () => {
         >
           {/* Search Bar */}
           <div className="relative max-w-md mx-auto">
-            <HiSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+            <HiSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 w-5 h-5" />
             <input
               type="text"
               placeholder="Search articles..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-10 pr-4 py-3 bg-dark-800/50 border border-gray-700/50 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200"
+              className="w-full pl-10 pr-4 py-3 bg-white dark:bg-black border border-black/20 dark:border-white/20 rounded-xl text-black dark:text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all duration-200"
             />
             {searchTerm && (
               <button
                 onClick={() => setSearchTerm('')}
-                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white transition-colors"
+                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-red-500 transition-colors"
               >
                 <HiX className="w-5 h-5" />
               </button>
@@ -111,8 +109,8 @@ const Blogs = () => {
                   onClick={() => setSelectedTag(tag)}
                   className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
                     selectedTag === tag
-                      ? 'bg-primary-500 text-white shadow-glow-primary'
-                      : 'bg-dark-700/50 text-gray-300 hover:bg-primary-500/20 hover:text-primary-400 border border-gray-600/50'
+                      ? 'bg-red-500 text-white'
+                      : 'bg-white dark:bg-black text-black dark:text-white border border-black/20 dark:border-white/20 hover:border-red-500'
                   }`}
                 >
                   {tag === 'all' ? 'All Topics' : tag}
@@ -155,10 +153,10 @@ const Blogs = () => {
             animate={{ opacity: 1 }}
             className="text-center py-16"
           >
-            <div className="w-16 h-16 bg-gray-700/50 rounded-full flex items-center justify-center mx-auto mb-4">
+            <div className="w-16 h-16 bg-gray-200 dark:bg-gray-800 rounded-full flex items-center justify-center mx-auto mb-4">
               <HiSearch className="w-8 h-8 text-gray-500" />
             </div>
-            <p className="text-gray-400 text-lg mb-4">
+            <p className="text-gray-600 dark:text-gray-400 text-lg mb-4">
               {searchTerm || selectedTag !== 'all' 
                 ? 'No articles found matching your criteria' 
                 : 'No articles available yet'
@@ -169,7 +167,7 @@ const Blogs = () => {
                 {searchTerm && (
                   <button
                     onClick={() => setSearchTerm('')}
-                    className="text-primary-400 hover:text-primary-300 font-medium"
+                    className="text-red-500 hover:text-red-600 font-medium"
                   >
                     Clear search
                   </button>
@@ -177,7 +175,7 @@ const Blogs = () => {
                 {selectedTag !== 'all' && (
                   <button
                     onClick={() => setSelectedTag('all')}
-                    className="text-accent-400 hover:text-accent-300 font-medium"
+                    className="text-red-500 hover:text-red-600 font-medium"
                   >
                     Show all topics
                   </button>
@@ -202,10 +200,10 @@ const Blogs = () => {
 
 const BlogCard = ({ blog, formatDate, getExcerpt, getReadingTime }) => {
   return (
-    <article className="bg-dark-800/50 backdrop-blur-sm rounded-2xl border border-gray-700/50 hover:border-primary-500/50 transition-all duration-300 overflow-hidden group hover:shadow-glow-lg h-full flex flex-col">
+    <article className="bg-white/50 dark:bg-black/50 backdrop-blur-sm rounded-2xl border border-black/20 dark:border-white/20 hover:border-red-500/50 hover:shadow-glow-lg transition-all duration-300 overflow-hidden group h-full flex flex-col">
       {/* Header */}
       <div className="p-6 pb-4">
-        <div className="flex items-center gap-3 text-sm text-gray-400 mb-3">
+        <div className="flex items-center gap-3 text-sm text-gray-600 dark:text-gray-400 mb-3">
           <div className="flex items-center gap-2">
             <HiUser className="w-4 h-4" />
             <span>{blog.author}</span>
@@ -219,14 +217,14 @@ const BlogCard = ({ blog, formatDate, getExcerpt, getReadingTime }) => {
           <span>{getReadingTime(blog.content)} min read</span>
         </div>
 
-        <h2 className="text-xl md:text-2xl font-semibold mb-3 group-hover:text-primary-400 transition-colors line-clamp-2">
+        <h2 className="text-xl md:text-2xl font-semibold mb-3 group-hover:text-red-500 transition-colors line-clamp-2 text-black dark:text-white">
           {blog.title}
         </h2>
       </div>
 
       {/* Content */}
       <div className="px-6 flex-1">
-        <p className="text-gray-400 leading-relaxed line-clamp-3 mb-4">
+        <p className="text-gray-600 dark:text-gray-400 leading-relaxed line-clamp-3 mb-4">
           {getExcerpt(blog.content)}
         </p>
       </div>
@@ -239,13 +237,13 @@ const BlogCard = ({ blog, formatDate, getExcerpt, getReadingTime }) => {
             {blog.tags.slice(0, 3).map((tag, index) => (
               <span
                 key={index}
-                className="px-2 py-1 bg-accent-500/10 text-accent-400 text-xs rounded-md border border-accent-500/20"
+                className="px-2 py-1 bg-red-500/10 text-red-500 text-xs rounded-md border border-red-500/30"
               >
                 {tag}
               </span>
             ))}
             {blog.tags.length > 3 && (
-              <span className="px-2 py-1 text-gray-400 text-xs">
+              <span className="px-2 py-1 text-gray-500 text-xs">
                 +{blog.tags.length - 3} more
               </span>
             )}
@@ -254,7 +252,7 @@ const BlogCard = ({ blog, formatDate, getExcerpt, getReadingTime }) => {
 
         {/* Read More */}
         <div className="flex items-center justify-between">
-          <span className="text-primary-400 font-medium group-hover:text-primary-300 transition-colors flex items-center gap-2">
+          <span className="text-red-500 font-medium group-hover:text-red-600 transition-colors flex items-center gap-2">
             <span>Read Article</span>
             <HiEye className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
           </span>

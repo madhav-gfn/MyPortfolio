@@ -35,11 +35,10 @@ const Projects = () => {
   const [selectedProject, setSelectedProject] = useState(null);
   const [filter, setFilter] = useState('all');
 
-  // Extract unique tech stack items for filtering
   const allTechs = activeProjects
     ? [...new Set(activeProjects.flatMap(project => project.techStack || []))]
     : [];
-  const filters = ['all', ...allTechs.slice(0, 6)]; // Limit to 6 most common techs
+  const filters = ['all', ...allTechs.slice(0, 6)];
 
   const filteredProjects = activeProjects?.filter(project => 
     filter === 'all' || project.techStack?.includes(filter)
@@ -56,10 +55,10 @@ const Projects = () => {
     return (
     <div className="min-h-screen pt-20 flex items-center justify-center">
       <div className="text-center">
-        <p className="text-red-400 text-lg mb-4">
+        <p className="text-red-500 text-lg mb-4">
           {isRateLimited ? 'GitHub API rate limit reached' : 'Failed to load projects'}
         </p>
-        <p className="text-gray-400">
+        <p className="text-gray-600 dark:text-gray-400">
           {isRateLimited
             ? 'Add a GitHub token or try again later.'
             : 'Please try again later'}
@@ -84,9 +83,9 @@ const Projects = () => {
           className="text-center mb-12"
         >
           <h1 className="text-4xl md:text-5xl font-display font-bold mb-4">
-            My <span className="bg-gradient-to-r from-primary-500 to-accent-500 bg-clip-text text-transparent">Projects</span>
+            My <span className="text-red-500">Projects</span>
           </h1>
-          <p className="text-gray-400 text-lg max-w-2xl mx-auto">
+          <p className="text-gray-600 dark:text-gray-400 text-lg max-w-2xl mx-auto">
             A collection of projects that showcase my skills in full-stack development, 
             machine learning, and creative problem solving.
           </p>
@@ -105,8 +104,8 @@ const Projects = () => {
               onClick={() => setFilter(tech)}
               className={`cursor-target px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
                 filter === tech
-                  ? 'bg-white text-black'
-                  : 'bg-dark-700/50 text-gray-300 border border-gray-600/50'
+                  ? 'bg-red-500 text-white'
+                  : 'bg-white dark:bg-black text-black dark:text-white border border-black/20 dark:border-white/20 hover:border-red-500'
               }`}
             >
               {tech === 'all' ? 'All Projects' : tech}
@@ -115,7 +114,7 @@ const Projects = () => {
         </motion.div>
 
         {useGithubSource && hasMissingTopics && (
-          <div className="mb-6 rounded-2xl border border-amber-500/30 bg-amber-500/10 px-4 py-3 text-sm text-amber-200">
+          <div className="mb-6 rounded-2xl border border-amber-500/30 bg-amber-500/10 px-4 py-3 text-sm text-amber-600 dark:text-amber-200">
             Some repositories do not expose topics yet. Add GitHub topics to improve filtering.
           </div>
         )}
@@ -155,11 +154,11 @@ const Projects = () => {
             animate={{ opacity: 1 }}
             className="text-center py-16"
           >
-            <HiCode className="w-16 h-16 text-gray-600 mx-auto mb-4" />
-            <p className="text-gray-400 text-lg">No projects found for this filter</p>
+            <HiCode className="w-16 h-16 text-gray-400 mx-auto mb-4" />
+            <p className="text-gray-600 dark:text-gray-400 text-lg">No projects found for this filter</p>
             <button
               onClick={() => setFilter('all')}
-              className="cursor-target mt-4 text-white font-medium"
+              className="cursor-target mt-4 text-red-500 font-medium hover:text-red-600"
             >
               Show all projects
             </button>
@@ -181,17 +180,17 @@ const ProjectCard = ({ project, onClick }) => {
   return (
     <div
       onClick={onClick}
-      className="cursor-target relative bg-dark-800/50 backdrop-blur-sm rounded-2xl border border-gray-700/50 transition-all duration-300 overflow-hidden group"
+      className="cursor-target relative bg-white/50 dark:bg-black/50 backdrop-blur-sm rounded-2xl border border-black/20 dark:border-white/20 hover:shadow-glow-lg transition-all duration-300 overflow-hidden group"
     >
       {/* Project Thumbnail */}
-      <div className="aspect-video bg-gradient-to-br from-primary-500/20 to-accent-500/20 relative overflow-hidden">
-        <div className="absolute inset-0 bg-dark-900/40 group-hover:bg-dark-900/20 transition-all duration-300" />
+      <div className="aspect-video bg-red-500/10 relative overflow-hidden">
+        <div className="absolute inset-0 bg-black/10 dark:bg-black/40 group-hover:bg-black/5 dark:group-hover:bg-black/20 transition-all duration-300" />
         <div className="absolute inset-0 flex items-center justify-center">
-          <HiCode className="w-12 h-12 text-primary-400 group-hover:scale-110 transition-transform duration-300" />
+          <HiCode className="w-12 h-12 text-red-500 group-hover:scale-110 transition-transform duration-300" />
         </div>
         
         {/* Hover Overlay */}
-        <div className="absolute inset-0 bg-primary-500/90 opacity-0 group-hover:opacity-100 transition-all duration-300 flex items-center justify-center">
+        <div className="absolute inset-0 bg-red-500/90 opacity-0 group-hover:opacity-100 transition-all duration-300 flex items-center justify-center">
           <div className="text-white text-center">
             <HiEye className="w-8 h-8 mx-auto mb-2" />
             <p className="text-sm font-medium">View Details</p>
@@ -201,11 +200,11 @@ const ProjectCard = ({ project, onClick }) => {
 
       {/* Content */}
       <div className="p-6">
-        <h3 className="text-xl font-semibold mb-2 transition-colors line-clamp-1">
+        <h3 className="text-xl font-semibold mb-2 text-black dark:text-white transition-colors line-clamp-1">
           {project.title}
         </h3>
         
-        <p className="text-gray-400 text-sm mb-4 line-clamp-2">
+        <p className="text-gray-600 dark:text-gray-400 text-sm mb-4 line-clamp-2">
           {project.description}
         </p>
 
@@ -214,13 +213,13 @@ const ProjectCard = ({ project, onClick }) => {
           {project.techStack?.slice(0, 3).map((tech, index) => (
             <span
               key={index}
-              className="px-2 py-1 bg-white/10 text-white text-xs rounded-md border border-white/20"
+              className="px-2 py-1 bg-red-500/10 text-red-500 text-xs rounded-md border border-red-500/30"
             >
               {tech}
             </span>
           ))}
           {project.techStack?.length > 3 && (
-            <span className="px-2 py-1 text-gray-400 text-xs">
+            <span className="px-2 py-1 text-gray-500 text-xs">
               +{project.techStack.length - 3} more
             </span>
           )}
@@ -234,7 +233,7 @@ const ProjectCard = ({ project, onClick }) => {
               target="_blank"
               rel="noopener noreferrer"
               onClick={(e) => e.stopPropagation()}
-              className="cursor-target flex items-center gap-2 text-gray-400 transition-colors"
+              className="cursor-target flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-red-500 transition-colors"
             >
               <FaGithub className="w-4 h-4" />
               <span className="text-sm">Code</span>
@@ -246,7 +245,7 @@ const ProjectCard = ({ project, onClick }) => {
               target="_blank"
               rel="noopener noreferrer"
               onClick={(e) => e.stopPropagation()}
-              className="cursor-target flex items-center gap-2 text-white transition-colors"
+              className="cursor-target flex items-center gap-2 text-black dark:text-white hover:text-red-500 transition-colors"
             >
               <HiExternalLink className="w-4 h-4" />
               <span className="text-sm">Live Demo</span>

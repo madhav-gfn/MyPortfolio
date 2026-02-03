@@ -32,7 +32,7 @@ export default {
       boxShadow: {
         'glow-primary': '0 0 20px rgba(255, 0, 0, 0.3)',
         'glow-accent': '0 0 20px rgba(255, 0, 0, 0.2)',
-        'glow-lg': '0 0 40px rgba(255, 0, 0, 0.2)',
+        'glow-lg': '0 0 40px rgba(255, 0, 0, 0.3)',
         'glow-xl': '0 0 60px rgba(255, 0, 0, 0.1)',
       },
       backdropBlur: {

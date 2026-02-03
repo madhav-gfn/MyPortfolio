@@ -20,6 +20,43 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* Custom Red Scrollbar */
+::-webkit-scrollbar {
+  width: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: #000000;
+}
+
+.dark ::-webkit-scrollbar-track {
+  background: #000000;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #ef4444;
+  border-radius: 6px;
+  border: 2px solid #000000;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  border: 2px solid #000000;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #dc2626;
+}
+
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #ef4444 #000000;
+}
+
+.dark * {
+  scrollbar-color: #ef4444 #000000;
+}
+
 /* Remove default button styles */
 button {
   border: none;
