@@ -45,7 +45,7 @@ project01/
 
 ---
 
-## 👤 Author & Contributors
+## 👤 About
 
 - **Name:** Madhav Mishra
 - **Email:** madmishra72@gmail.com
@@ -72,25 +72,8 @@ project01/
 
 ---
 
-## 📄 License
-
-_No license specified._  
-*Please add a LICENSE file to clarify usage rights.*
-
----
-
-## 💡 Additional Notes
-
-- No public documentation or description is currently available.
-- No open issues or pull requests.
-- Repository forks: **0**, stars: **0**, watchers: **0**.
-
----
-
 ## 🏁 Quick Links
 
 - [Repository Home](https://github.com/madhav-gfn/project01)
 
 ---
-
-*Feel free to update this README with more details as your project evolves!*
