@@ -35,12 +35,6 @@ const Navbar = () => {
       animate={{ x: 0, width: isExpanded ? 200 : 80 }}
       onMouseEnter={() => setIsExpanded(true)}
       onMouseLeave={() => setIsExpanded(false)}
-      onFocus={() => setIsExpanded(true)}
-      onBlur={(event) => {
-        if (navRef.current && !navRef.current.contains(event.relatedTarget)) {
-          setIsExpanded(false);
-        }
-      }}
       aria-expanded={isExpanded}
       className="fixed right-0 top-0 h-full z-50 bg-black/90 backdrop-blur-lg border-l border-white/20 flex flex-col items-center justify-center transition-all duration-300"
     >
@@ -50,41 +44,42 @@ const Navbar = () => {
       >
         <Link
           to="/"
-          className="cursor-target text-xl font-display font-bold text-white"
+          className="cursor-target text-xl font-display font-bold text-white group"
         >
-          {isExpanded ? 'Portfolio' : 'P'}
+          {isExpanded ? (
+            <span>
+              <span className="text-white">Madhav</span> <span className="text-red-500">Mishra</span>
+            </span>
+          ) : (
+            'M'
+          )}
         </Link>
       </motion.div>
 
       {/* Navigation */}
-      <div className="flex flex-col items-center space-y-6">
+      <div className="flex flex-col items-center space-y-6 w-full">
         {navItems.map((item) => {
           return (
-            <motion.div key={item.path}>
+            <motion.div key={item.path} className="w-full flex justify-center">
               <Link
                 to={item.path}
-                className={`cursor-target flex items-center p-3 rounded-lg font-medium transition-all duration-200 relative ${
-                  location.pathname === item.path
-                    ? 'text-white bg-white/10'
-                    : 'text-gray-300'
-                } ${isExpanded ? 'w-40 justify-start space-x-3' : 'w-12 justify-center'}`}
+                className={`cursor-target flex items-center p-3 rounded-lg font-medium transition-all duration-200 relative ${location.pathname === item.path
+                  ? 'text-white bg-white/10'
+                  : 'text-gray-300'
+                  } ${isExpanded ? 'w-[160px] px-4 justify-start space-x-3' : 'w-12 justify-center'}`}
               >
-                <img 
+                <img
                   src={item.icon}
                   alt={item.label}
-                  className={`transition-all duration-200 filter brightness-0 invert ${
-                    isExpanded ? 'w-6 h-6' : 'w-5 h-5'
-                  }`} 
+                  className={`transition-all duration-200 filter brightness-0 invert flex-shrink-0 ${isExpanded ? 'w-6 h-6' : 'w-5 h-5'
+                    }`}
                 />
-                {isExpanded && (
-                  <motion.span
-                    initial={{ opacity: 0, x: -10 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    className="text-sm whitespace-nowrap"
-                  >
+
+                <div className={`overflow-hidden transition-all duration-200 ${isExpanded ? 'opacity-100 w-auto' : 'opacity-0 w-0'}`}>
+                  <span className="text-sm whitespace-nowrap">
                     {item.label}
-                  </motion.span>
-                )}
+                  </span>
+                </div>
               </Link>
             </motion.div>
           );
@@ -129,16 +124,15 @@ const Navbar = () => {
                 >
                   <Link
                     to={item.path}
-                    className={`cursor-target flex items-center space-x-3 px-6 py-3 rounded-md text-lg font-medium transition-all duration-200 ${
-                      location.pathname === item.path
-                        ? 'text-white bg-white/10'
-                        : 'text-gray-300'
-                    }`}
+                    className={`cursor-target flex items-center space-x-3 px-6 py-3 rounded-md text-lg font-medium transition-all duration-200 ${location.pathname === item.path
+                      ? 'text-white bg-white/10'
+                      : 'text-gray-300'
+                      }`}
                   >
-                    <img 
+                    <img
                       src={item.icon}
                       alt={item.label}
-                      className="w-6 h-6 filter brightness-0 invert" 
+                      className="w-6 h-6 filter brightness-0 invert"
                     />
                     <span>{item.label}</span>
                   </Link>

@@ -11,6 +11,7 @@
 
 html {
   scroll-behavior: smooth;
+  direction: rtl; /* Move scrollbar to left */
 }
 
 body {
@@ -18,6 +19,7 @@ body {
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  direction: ltr; /* Reset content direction */
 }
 
 /* Custom Red Scrollbar */

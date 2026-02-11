@@ -79,7 +79,6 @@ const Projects = () => {
     filter === 'all' || project.techStack?.includes(filter)
   );
 
-  const hasMissingTopics = projects.some(project => !project.techStack || project.techStack.length === 0);
 
   if (isLoading) return <Loader />;
   if (error) {
@@ -119,15 +118,11 @@ const Projects = () => {
           </h1>
           <p className="text-gray-600 dark:text-gray-400 text-lg max-w-2xl mx-auto">
             A collection of projects that showcase my skills in full-stack development,
-            machine learning, and creative problem solving.
+            game development, and creative problem solving.
           </p>
         </motion.div>
 
-        {hasMissingTopics && (
-          <div className="mb-6 rounded-2xl border border-amber-500/30 bg-amber-500/10 px-4 py-3 text-sm text-amber-600 dark:text-amber-200">
-            Some repositories do not expose topics yet. Add GitHub topics to improve filtering.
-          </div>
-        )}
+
 
         {/* Featured Projects Section */}
         <motion.div

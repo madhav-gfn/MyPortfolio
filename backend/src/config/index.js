@@ -19,6 +19,12 @@ export const config = {
 
     // CORS
     frontendUrl: process.env.FRONTEND_URL || 'http://localhost:5173',
+
+    // Email
+    email: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS,
+    },
 };
 
 export default config;

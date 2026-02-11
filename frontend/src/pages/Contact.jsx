@@ -3,8 +3,8 @@ import { motion } from 'framer-motion';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import { HiMail, HiUser, HiChat, HiPaperAirplane, HiLocationMarker, HiPhone, HiCheckCircle } from 'react-icons/hi';
-import { FaGithub, FaLinkedin, FaTwitter, FaInstagram } from 'react-icons/fa';
+import { HiMail, HiUser, HiChat, HiPaperAirplane, HiLocationMarker, HiPhone, HiCheckCircle, HiExclamationCircle } from 'react-icons/hi';
+import { FaGithub, FaLinkedin, FaMedium, FaInstagram } from 'react-icons/fa';
 
 const contactSchema = yup.object({
   name: yup
@@ -26,6 +26,7 @@ const contactSchema = yup.object({
 const Contact = () => {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState(null);
 
   const {
     register,
@@ -39,18 +40,21 @@ const Contact = () => {
 
   const onSubmit = async (data) => {
     setIsSubmitting(true);
+    setSubmitError(null);
 
-    // Create mailto link with form data
-    const subject = encodeURIComponent(`Portfolio Contact from ${data.name}`);
-    const body = encodeURIComponent(`Name: ${data.name}\nEmail: ${data.email}\n\nMessage:\n${data.message}`);
-    const mailtoLink = `mailto:madmishra72@gmail.com?subject=${subject}&body=${body}`;
+    try {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/contact`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      });
 
-    // Open email client
-    window.location.href = mailtoLink;
+      const result = await response.json();
 
-    // Show success state
-    setTimeout(() => {
-      setIsSubmitting(false);
+      if (!response.ok) {
+        throw new Error(result.message || 'Failed to send message');
+      }
+
       setIsSubmitted(true);
       reset();
 
@@ -58,7 +62,11 @@ const Contact = () => {
       setTimeout(() => {
         setIsSubmitted(false);
       }, 5000);
-    }, 1000);
+    } catch (error) {
+      setSubmitError(error.message || 'Something went wrong. Please try again.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const contactInfo = [
@@ -84,9 +92,9 @@ const Contact = () => {
 
   const socialLinks = [
     { icon: FaGithub, href: 'https://github.com/madhav-gfn', label: 'GitHub' },
-    { icon: FaLinkedin, href: 'https://linkedin.com/in/madhav-mishra-4a0a62286/', label: 'LinkedIn' },
-    { icon: FaTwitter, href: '#', label: 'Twitter' },
-    { icon: FaInstagram, href: '#', label: 'Instagram' },
+    { icon: FaLinkedin, href: 'https://linkedin.com/in/madhav-gfn', label: 'LinkedIn' },
+    { icon: FaMedium, href: 'https://medium.com/@madmishra72', label: 'Medium' },
+    { icon: FaInstagram, href: 'https://www.instagram.com/madhav.__mishra/', label: 'Instagram' },
   ];
 
   return (
@@ -134,10 +142,10 @@ const Contact = () => {
                 >
                   <HiCheckCircle className="w-16 h-16 text-green-500 mx-auto mb-4" />
                   <h3 className="text-xl font-semibold text-black dark:text-white mb-2">
-                    Email Client Opened!
+                    Message Sent!
                   </h3>
                   <p className="text-gray-600 dark:text-gray-400">
-                    Please send the email from your email client. I'll get back to you soon!
+                    Thank you for reaching out. I'll get back to you soon!
                   </p>
                 </motion.div>
               ) : (
@@ -155,8 +163,8 @@ const Contact = () => {
                         id="name"
                         placeholder="John Doe"
                         className={`w-full pl-10 pr-4 py-3 bg-white dark:bg-black border rounded-xl text-black dark:text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:border-transparent transition-all duration-200 ${errors.name
-                            ? 'border-red-500 focus:ring-red-500'
-                            : 'border-black/20 dark:border-white/20 focus:ring-red-500'
+                          ? 'border-red-500 focus:ring-red-500'
+                          : 'border-black/20 dark:border-white/20 focus:ring-red-500'
                           }`}
                       />
                     </div>
@@ -184,8 +192,8 @@ const Contact = () => {
                         id="email"
                         placeholder="john@example.com"
                         className={`w-full pl-10 pr-4 py-3 bg-white dark:bg-black border rounded-xl text-black dark:text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:border-transparent transition-all duration-200 ${errors.email
-                            ? 'border-red-500 focus:ring-red-500'
-                            : 'border-black/20 dark:border-white/20 focus:ring-red-500'
+                          ? 'border-red-500 focus:ring-red-500'
+                          : 'border-black/20 dark:border-white/20 focus:ring-red-500'
                           }`}
                       />
                     </div>
@@ -211,8 +219,8 @@ const Contact = () => {
                       rows={5}
                       placeholder="Tell me about your project or just say hi!"
                       className={`w-full px-4 py-3 bg-white dark:bg-black border rounded-xl text-black dark:text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:border-transparent transition-all duration-200 resize-none ${errors.message
-                          ? 'border-red-500 focus:ring-red-500'
-                          : 'border-black/20 dark:border-white/20 focus:ring-red-500'
+                        ? 'border-red-500 focus:ring-red-500'
+                        : 'border-black/20 dark:border-white/20 focus:ring-red-500'
                         }`}
                     />
                     {errors.message && (
@@ -231,14 +239,14 @@ const Contact = () => {
                     type="submit"
                     disabled={isSubmitting}
                     className={`cursor-target w-full py-3 px-6 rounded-xl font-medium transition-all duration-200 flex items-center justify-center gap-2 ${isSubmitting
-                        ? 'bg-gray-400 cursor-not-allowed'
-                        : 'bg-red-500 text-white hover:bg-red-600'
+                      ? 'bg-gray-400 cursor-not-allowed'
+                      : 'bg-red-500 text-white hover:bg-red-600'
                       }`}
                   >
                     {isSubmitting ? (
                       <>
                         <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                        Opening Email...
+                        Sending...
                       </>
                     ) : (
                       <>
@@ -247,6 +255,17 @@ const Contact = () => {
                       </>
                     )}
                   </motion.button>
+
+                  {submitError && (
+                    <motion.div
+                      initial={{ opacity: 0, y: -10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="flex items-center gap-2 text-red-500 text-sm mt-3"
+                    >
+                      <HiExclamationCircle className="w-5 h-5 flex-shrink-0" />
+                      {submitError}
+                    </motion.div>
+                  )}
                 </form>
               )}
             </div>
@@ -319,14 +338,14 @@ const Contact = () => {
               </h3>
               <p className="text-gray-600 dark:text-gray-400 text-sm leading-relaxed">
                 I'm currently available for freelance projects and full-time opportunities.
-                Whether you need help with web development, machine learning, or just want to discuss ideas,
+                Whether you need help with web development, game development, or just want to discuss ideas,
                 I'd love to hear from you!
               </p>
             </div>
           </motion.div>
-        </div>
-      </div>
-    </motion.div>
+        </div >
+      </div >
+    </motion.div >
   );
 };
 

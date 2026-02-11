@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { FaGithub, FaLinkedin, FaTwitter, FaInstagram } from 'react-icons/fa';
+import { FaGithub, FaLinkedin, FaMedium, FaInstagram } from 'react-icons/fa';
 import { HiMail, HiLocationMarker } from 'react-icons/hi';
 
 const Footer = () => {
@@ -15,9 +15,9 @@ const Footer = () => {
 
   const socialLinks = [
     { icon: FaGithub, href: 'https://github.com/madhav-gfn', label: 'GitHub' },
-    { icon: FaLinkedin, href: 'https://linkedin.com/in/madhav-mishra-4a0a62286/', label: 'LinkedIn' },
-    { icon: FaTwitter, href: '#', label: 'Twitter' },
-    { icon: FaInstagram, href: '#', label: 'Instagram' },
+    { icon: FaLinkedin, href: 'https://linkedin.com/in/madhav-gfn', label: 'LinkedIn' },
+    { icon: FaMedium, href: 'https://medium.com/@madmishra72', label: 'Medium' },
+    { icon: FaInstagram, href: 'https://www.instagram.com/madhav.__mishra/', label: 'Instagram' },
   ];
 
   return (
@@ -35,12 +35,12 @@ const Footer = () => {
               >
                 <Link
                   to="/"
-                  className="cursor-target text-2xl font-display font-bold text-black dark:text-white"
+                  className="cursor-target text-2xl font-display font-bold"
                 >
-                  Portfolio
+                  <span className="text-black dark:text-white">Madhav</span> <span className="text-red-500">Mishra</span>
                 </Link>
               </motion.div>
-              
+
               <motion.p
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -48,7 +48,7 @@ const Footer = () => {
                 transition={{ delay: 0.1 }}
                 className="text-gray-600 dark:text-gray-400 leading-relaxed mb-6 max-w-md"
               >
-                Passionate full-stack developer and machine learning engineer creating 
+                Passionate full-stack developer and game dev creating
                 innovative digital solutions that make a difference. Let's build something amazing together.
               </motion.p>
 

@@ -5,6 +5,7 @@
 
 import { Router } from 'express';
 import projectsRoutes from './projects.routes.js';
+import contactRoutes from './contact.routes.js';
 
 const router = Router();
 
@@ -19,5 +20,6 @@ router.get('/health', (req, res) => {
 
 // Mount route modules
 router.use('/projects', projectsRoutes);
+router.use('/contact', contactRoutes);
 
 export default router;

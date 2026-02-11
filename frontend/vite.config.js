@@ -5,6 +5,7 @@ import path from 'path'
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
+  assetsInclude: ['**/*.glb'],
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
@@ -24,8 +25,6 @@ export default defineConfig({
           router: ['react-router-dom'],
           ui: ['framer-motion', '@headlessui/react'],
           forms: ['react-hook-form', '@hookform/resolvers', 'yup'],
-          query: ['@tanstack/react-query'],
-          http: ['axios'],
           icons: ['react-icons'],
           toast: ['react-hot-toast'],
         },
@@ -43,8 +42,6 @@ export default defineConfig({
       'react-hook-form',
       '@hookform/resolvers',
       'yup',
-      '@tanstack/react-query',
-      'axios',
       'react-icons',
       'react-hot-toast',
     ],
