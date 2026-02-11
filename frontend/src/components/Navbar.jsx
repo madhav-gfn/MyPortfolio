@@ -26,6 +26,7 @@ const Navbar = () => {
 
   useEffect(() => {
     setIsOpen(false);
+    setIsExpanded(false);
   }, [location.pathname]);
 
   return (
