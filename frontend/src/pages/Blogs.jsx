@@ -1,12 +1,38 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { HiSearch, HiCalendar, HiUser, HiEye, HiX } from 'react-icons/hi';
-import { useBlogs } from '../hooks/useApi';
-import Loader from '../components/Loader';
 import BlogModal from '../components/BlogModal';
 
+// Static blog data - add your own blog posts here
+const staticBlogs = [
+  {
+    _id: '1',
+    title: 'Getting Started with React Hooks',
+    content: 'React Hooks are a powerful feature that lets you use state and other React features without writing a class. In this article, we explore useState, useEffect, and custom hooks. Hooks were introduced in React 16.8 and have since become the standard way to write React components. They provide a more direct API to the React concepts you already know: props, state, context, refs, and lifecycle.',
+    author: 'Madhav Mishra',
+    tags: ['React', 'JavaScript', 'Frontend'],
+    createdAt: '2024-01-15T10:00:00Z',
+  },
+  {
+    _id: '2',
+    title: 'Building a Portfolio Website',
+    content: 'Learn how to create a stunning portfolio website to showcase your projects and skills. We will cover design principles, responsive layouts, and animations. A portfolio website is essential for any developer looking to stand out in the job market. It serves as a digital resume and a platform to demonstrate your technical abilities.',
+    author: 'Madhav Mishra',
+    tags: ['Web Development', 'Design', 'Portfolio'],
+    createdAt: '2024-02-20T14:30:00Z',
+  },
+  {
+    _id: '3',
+    title: 'Introduction to Machine Learning',
+    content: 'Machine learning is a subset of artificial intelligence that enables systems to learn and improve from experience. This guide covers the fundamentals of ML, including supervised and unsupervised learning, neural networks, and practical applications. Understanding these concepts is crucial for anyone looking to work with data science or AI.',
+    author: 'Madhav Mishra',
+    tags: ['Machine Learning', 'AI', 'Python'],
+    createdAt: '2024-03-10T09:15:00Z',
+  },
+];
+
 const Blogs = () => {
-  const { data: blogs, isLoading, error } = useBlogs();
+  const blogs = staticBlogs;
   const [selectedBlog, setSelectedBlog] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedTag, setSelectedTag] = useState('all');
@@ -16,8 +42,8 @@ const Blogs = () => {
 
   const filteredBlogs = blogs?.filter(blog => {
     const matchesSearch = blog.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         blog.content.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         blog.author.toLowerCase().includes(searchTerm.toLowerCase());
+      blog.content.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      blog.author.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesTag = selectedTag === 'all' || (blog.tags && blog.tags.includes(selectedTag));
     return matchesSearch && matchesTag;
   }) || [];
@@ -40,16 +66,6 @@ const Blogs = () => {
     return Math.ceil(words / wordsPerMinute);
   };
 
-  if (isLoading) return <Loader />;
-  if (error) return (
-    <div className="min-h-screen pt-20 flex items-center justify-center">
-      <div className="text-center">
-        <p className="text-red-500 text-lg mb-4">Failed to load blogs</p>
-        <p className="text-gray-600 dark:text-gray-400">Please try again later</p>
-      </div>
-    </div>
-  );
-
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -68,7 +84,7 @@ const Blogs = () => {
             My <span className="text-red-500">Blog</span>
           </h1>
           <p className="text-gray-600 dark:text-gray-400 text-lg max-w-2xl mx-auto">
-            Thoughts, insights, and experiences from my journey in technology, 
+            Thoughts, insights, and experiences from my journey in technology,
             development, and continuous learning.
           </p>
         </motion.div>
@@ -93,7 +109,7 @@ const Blogs = () => {
             {searchTerm && (
               <button
                 onClick={() => setSearchTerm('')}
-                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-red-500 transition-colors"
+                className="cursor-target absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-red-500 transition-colors"
               >
                 <HiX className="w-5 h-5" />
               </button>
@@ -107,11 +123,10 @@ const Blogs = () => {
                 <button
                   key={tag}
                   onClick={() => setSelectedTag(tag)}
-                  className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
-                    selectedTag === tag
-                      ? 'bg-red-500 text-white'
-                      : 'bg-white dark:bg-black text-black dark:text-white border border-black/20 dark:border-white/20 hover:border-red-500'
-                  }`}
+                  className={`cursor-target px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${selectedTag === tag
+                    ? 'bg-red-500 text-white'
+                    : 'bg-white dark:bg-black text-black dark:text-white border border-black/20 dark:border-white/20 hover:border-red-500'
+                    }`}
                 >
                   {tag === 'all' ? 'All Topics' : tag}
                 </button>
@@ -137,7 +152,7 @@ const Blogs = () => {
                 exit={{ scale: 0.9, opacity: 0 }}
                 transition={{ delay: index * 0.1 }}
                 whileHover={{ y: -5, scale: 1.01 }}
-                className="group cursor-pointer"
+                className="group cursor-target"
                 onClick={() => setSelectedBlog(blog)}
               >
                 <BlogCard blog={blog} formatDate={formatDate} getExcerpt={getExcerpt} getReadingTime={getReadingTime} />
@@ -157,8 +172,8 @@ const Blogs = () => {
               <HiSearch className="w-8 h-8 text-gray-500" />
             </div>
             <p className="text-gray-600 dark:text-gray-400 text-lg mb-4">
-              {searchTerm || selectedTag !== 'all' 
-                ? 'No articles found matching your criteria' 
+              {searchTerm || selectedTag !== 'all'
+                ? 'No articles found matching your criteria'
                 : 'No articles available yet'
               }
             </p>
@@ -167,7 +182,7 @@ const Blogs = () => {
                 {searchTerm && (
                   <button
                     onClick={() => setSearchTerm('')}
-                    className="text-red-500 hover:text-red-600 font-medium"
+                    className="cursor-target text-red-500 hover:text-red-600 font-medium"
                   >
                     Clear search
                   </button>
@@ -175,7 +190,7 @@ const Blogs = () => {
                 {selectedTag !== 'all' && (
                   <button
                     onClick={() => setSelectedTag('all')}
-                    className="text-red-500 hover:text-red-600 font-medium"
+                    className="cursor-target text-red-500 hover:text-red-600 font-medium"
                   >
                     Show all topics
                   </button>

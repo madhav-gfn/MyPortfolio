@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import { Fragment } from 'react';
 import { motion } from 'framer-motion';
@@ -6,6 +6,38 @@ import { HiX, HiExternalLink, HiCode } from 'react-icons/hi';
 import { FaGithub, FaCalendar } from 'react-icons/fa';
 
 const ProjectModal = ({ project, isOpen, onClose }) => {
+  const githubUsername = import.meta.env.VITE_GITHUB_USERNAME;
+  const [projectMeta, setProjectMeta] = useState(null);
+  const [metaLoading, setMetaLoading] = useState(false);
+
+  useEffect(() => {
+    if (!project || !isOpen || !githubUsername) {
+      setProjectMeta(null);
+      return;
+    }
+
+    const fetchProjectMeta = async () => {
+      setMetaLoading(true);
+      try {
+        const res = await fetch(
+          `https://raw.githubusercontent.com/${githubUsername}/${project.title}/main/preview/project.json`
+        );
+        if (res.ok) {
+          const data = await res.json();
+          setProjectMeta(data);
+        } else {
+          setProjectMeta(null);
+        }
+      } catch {
+        setProjectMeta(null);
+      } finally {
+        setMetaLoading(false);
+      }
+    };
+
+    fetchProjectMeta();
+  }, [project, isOpen, githubUsername]);
+
   if (!project) return null;
 
   const formatDate = (dateString) => {
@@ -15,6 +47,14 @@ const ProjectModal = ({ project, isOpen, onClose }) => {
       day: 'numeric'
     });
   };
+
+  // Support both array format ["feat1", "feat2"] and object format {"Name": "Description"}
+  const rawFeatures = projectMeta?.features;
+  const features = rawFeatures
+    ? Array.isArray(rawFeatures)
+      ? rawFeatures.map(f => ({ name: f, description: '' }))
+      : Object.entries(rawFeatures).map(([name, description]) => ({ name, description }))
+    : [];
 
   return (
     <Transition appear show={isOpen} as={Fragment}>
@@ -52,7 +92,7 @@ const ProjectModal = ({ project, isOpen, onClose }) => {
                   {/* Close Button */}
                   <button
                     onClick={onClose}
-                    className="absolute top-4 right-4 z-10 p-2 rounded-full bg-dark-900/50 text-gray-400 hover:text-white hover:bg-dark-900/80 transition-all duration-200"
+                    className="cursor-target absolute top-4 right-4 z-10 p-2 rounded-full bg-dark-900/50 text-gray-400 hover:text-white hover:bg-dark-900/80 transition-all duration-200"
                     aria-label="Close modal"
                   >
                     <HiX className="w-6 h-6" />
@@ -73,7 +113,7 @@ const ProjectModal = ({ project, isOpen, onClose }) => {
                         <Dialog.Title className="text-3xl font-display font-bold text-white mb-2">
                           {project.title}
                         </Dialog.Title>
-                        
+
                         <div className="flex items-center gap-4 text-sm text-gray-400 mb-4">
                           <div className="flex items-center gap-2">
                             <FaCalendar className="w-4 h-4" />
@@ -95,7 +135,7 @@ const ProjectModal = ({ project, isOpen, onClose }) => {
                               href={project.github}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="flex items-center gap-2 px-4 py-2 bg-gray-700/50 hover:bg-gray-700 text-white rounded-lg transition-colors duration-200"
+                              className="cursor-target flex items-center gap-2 px-4 py-2 bg-gray-700/50 hover:bg-gray-700 text-white rounded-lg transition-colors duration-200"
                             >
                               <FaGithub className="w-4 h-4" />
                               <span>View Code</span>
@@ -106,7 +146,7 @@ const ProjectModal = ({ project, isOpen, onClose }) => {
                               href={project.liveDemo}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="flex items-center gap-2 px-4 py-2 bg-primary-500 hover:bg-primary-600 text-white rounded-lg transition-colors duration-200"
+                              className="cursor-target flex items-center gap-2 px-4 py-2 bg-primary-500 hover:bg-primary-600 text-white rounded-lg transition-colors duration-200"
                             >
                               <HiExternalLink className="w-4 h-4" />
                               <span>Live Demo</span>
@@ -147,28 +187,40 @@ const ProjectModal = ({ project, isOpen, onClose }) => {
                       </div>
                     )}
 
-                    {/* Features */}
-                    <div className="mb-8">
-                      <h3 className="text-lg font-semibold text-white mb-4">Key Features</h3>
-                      <ul className="space-y-2 text-gray-300">
-                        <li className="flex items-start gap-3">
-                          <div className="w-1.5 h-1.5 bg-primary-500 rounded-full mt-2 flex-shrink-0"></div>
-                          <span>Modern and responsive design</span>
-                        </li>
-                        <li className="flex items-start gap-3">
-                          <div className="w-1.5 h-1.5 bg-primary-500 rounded-full mt-2 flex-shrink-0"></div>
-                          <span>Clean and maintainable code architecture</span>
-                        </li>
-                        <li className="flex items-start gap-3">
-                          <div className="w-1.5 h-1.5 bg-primary-500 rounded-full mt-2 flex-shrink-0"></div>
-                          <span>Optimized performance and accessibility</span>
-                        </li>
-                        <li className="flex items-start gap-3">
-                          <div className="w-1.5 h-1.5 bg-primary-500 rounded-full mt-2 flex-shrink-0"></div>
-                          <span>Cross-platform compatibility</span>
-                        </li>
-                      </ul>
-                    </div>
+                    {/* Features - fetched from preview/project.json */}
+                    {metaLoading ? (
+                      <div className="mb-8">
+                        <h3 className="text-lg font-semibold text-white mb-4">Key Features</h3>
+                        <div className="space-y-2">
+                          {[1, 2, 3].map((i) => (
+                            <div key={i} className="h-5 bg-gray-700/50 rounded animate-pulse w-3/4" />
+                          ))}
+                        </div>
+                      </div>
+                    ) : features.length > 0 ? (
+                      <div className="mb-8">
+                        <h3 className="text-lg font-semibold text-white mb-4">Key Features</h3>
+                        <ul className="space-y-3 text-gray-300">
+                          {features.map((feature, index) => (
+                            <motion.li
+                              key={index}
+                              initial={{ opacity: 0, x: -10 }}
+                              animate={{ opacity: 1, x: 0 }}
+                              transition={{ delay: index * 0.1 }}
+                              className="flex items-start gap-3"
+                            >
+                              <div className="w-1.5 h-1.5 bg-primary-500 rounded-full mt-2 flex-shrink-0"></div>
+                              <div>
+                                <span className="font-medium text-white">{feature.name}</span>
+                                {feature.description && (
+                                  <span className="text-gray-400"> — {feature.description}</span>
+                                )}
+                              </div>
+                            </motion.li>
+                          ))}
+                        </ul>
+                      </div>
+                    ) : null}
 
                     {/* Project Stats */}
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">

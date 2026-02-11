@@ -1,71 +1,103 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { HiExternalLink, HiCode, HiX, HiEye } from 'react-icons/hi';
+import { HiExternalLink, HiCode, HiEye } from 'react-icons/hi';
 import { FaGithub } from 'react-icons/fa';
-import { useProjects, useGithubPortfolioProjects } from '../hooks/useApi';
 import Loader from '../components/Loader';
 import ProjectModal from '../components/ProjectModal';
 
 const Projects = () => {
-  const projectsSource = import.meta.env.VITE_PROJECTS_SOURCE;
   const githubUsername = import.meta.env.VITE_GITHUB_USERNAME;
-  const useGithubSource = projectsSource === 'github';
-
-  const { data: projects, isLoading, error } = useProjects({ enabled: !useGithubSource });
-  const {
-    data: githubProjects,
-    isLoading: isGithubLoading,
-    error: githubError,
-  } = useGithubPortfolioProjects(githubUsername, { enabled: useGithubSource });
-
-  const normalizedGithubProjects = githubProjects?.items?.map((repo) => ({
-    id: repo.id,
-    title: repo.name,
-    description: repo.description || 'No description provided yet.',
-    github: repo.html_url,
-    liveDemo: repo.homepage || '',
-    techStack: repo.topics || [],
-    createdAt: repo.created_at,
-    importedFromGithub: true,
-  }));
-
-  const activeProjects = useGithubSource ? normalizedGithubProjects : projects;
-  const activeLoading = useGithubSource ? isGithubLoading : isLoading;
-  const activeError = useGithubSource ? githubError : error;
+  const [projects, setProjects] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [selectedProject, setSelectedProject] = useState(null);
   const [filter, setFilter] = useState('all');
 
-  const allTechs = activeProjects
-    ? [...new Set(activeProjects.flatMap(project => project.techStack || []))]
-    : [];
-  const filters = ['all', ...allTechs.slice(0, 6)];
+  useEffect(() => {
+    const fetchProjects = async () => {
+      if (!githubUsername) {
+        setError(new Error('GitHub username not configured'));
+        setIsLoading(false);
+        return;
+      }
 
-  const filteredProjects = activeProjects?.filter(project => 
-    filter === 'all' || project.techStack?.includes(filter)
-  ) || [];
+      try {
+        const response = await fetch(
+          `https://api.github.com/users/${githubUsername}/repos?per_page=100&sort=updated`,
+          {
+            headers: {
+              Accept: 'application/vnd.github+json',
+            },
+          }
+        );
 
-  const hasMissingTopics = useGithubSource
-    ? activeProjects?.some(project => !project.techStack || project.techStack.length === 0)
-    : false;
+        if (!response.ok) {
+          if (response.status === 403) {
+            throw new Error('GitHub API rate limit reached');
+          }
+          throw new Error('Failed to load GitHub projects.');
+        }
 
-  if (activeLoading) return <Loader />;
-  if (activeError) {
-    const errorStatus = activeError?.response?.status || activeError?.status;
-    const isRateLimited = useGithubSource && errorStatus === 403;
-    return (
-    <div className="min-h-screen pt-20 flex items-center justify-center">
-      <div className="text-center">
-        <p className="text-red-500 text-lg mb-4">
-          {isRateLimited ? 'GitHub API rate limit reached' : 'Failed to load projects'}
-        </p>
-        <p className="text-gray-600 dark:text-gray-400">
-          {isRateLimited
-            ? 'Add a GitHub token or try again later.'
-            : 'Please try again later'}
-        </p>
-      </div>
-    </div>
+        const repos = await response.json();
+        const formattedProjects = repos.map((repo) => ({
+          id: repo.id,
+          title: repo.name,
+          description: repo.description || 'No description provided.',
+          techStack: repo.topics?.length ? repo.topics : repo.language ? [repo.language] : [],
+          github: repo.html_url,
+          liveDemo: repo.homepage || '',
+        }));
+        setProjects(formattedProjects);
+      } catch (err) {
+        setError(err);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchProjects();
+  }, [githubUsername]);
+
+  // Separate projects into featured (portfolio-tagged) and others
+  const featuredProjects = projects.filter(project =>
+    project.techStack?.some(tech => tech.toLowerCase() === 'portfolio')
   );
+  const otherProjects = projects.filter(project =>
+    project.techStack?.some(tech => tech.toLowerCase() === 'others')
+  );
+
+  // Get unique tech tags from other projects (excluding 'portfolio' and 'others')
+  const otherTechs = otherProjects.length > 0
+    ? [...new Set(otherProjects.flatMap(project => project.techStack || []))]
+      .filter(tech => tech.toLowerCase() !== 'portfolio' && tech.toLowerCase() !== 'others')
+      .slice(0, 6)
+    : [];
+  const filters = ['all', ...otherTechs];
+
+  // Filter applies only to the "Other Projects" section
+  const filteredOtherProjects = otherProjects.filter(project =>
+    filter === 'all' || project.techStack?.includes(filter)
+  );
+
+  const hasMissingTopics = projects.some(project => !project.techStack || project.techStack.length === 0);
+
+  if (isLoading) return <Loader />;
+  if (error) {
+    const isRateLimited = error.message.includes('rate limit');
+    return (
+      <div className="min-h-screen pt-20 flex items-center justify-center">
+        <div className="text-center">
+          <p className="text-red-500 text-lg mb-4">
+            {isRateLimited ? 'GitHub API rate limit reached' : 'Failed to load projects'}
+          </p>
+          <p className="text-gray-600 dark:text-gray-400">
+            {isRateLimited
+              ? 'Please try again later.'
+              : error.message || 'Please try again later'}
+          </p>
+        </div>
+      </div>
+    );
   }
 
   return (
@@ -86,84 +118,132 @@ const Projects = () => {
             My <span className="text-red-500">Projects</span>
           </h1>
           <p className="text-gray-600 dark:text-gray-400 text-lg max-w-2xl mx-auto">
-            A collection of projects that showcase my skills in full-stack development, 
+            A collection of projects that showcase my skills in full-stack development,
             machine learning, and creative problem solving.
           </p>
         </motion.div>
 
-        {/* Filter Buttons */}
-        <motion.div
-          initial={{ y: 30, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ delay: 0.2 }}
-          className="flex flex-wrap justify-center gap-3 mb-12"
-        >
-          {filters.map((tech) => (
-            <button
-              key={tech}
-              onClick={() => setFilter(tech)}
-              className={`cursor-target px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
-                filter === tech
-                  ? 'bg-red-500 text-white'
-                  : 'bg-white dark:bg-black text-black dark:text-white border border-black/20 dark:border-white/20 hover:border-red-500'
-              }`}
-            >
-              {tech === 'all' ? 'All Projects' : tech}
-            </button>
-          ))}
-        </motion.div>
-
-        {useGithubSource && hasMissingTopics && (
+        {hasMissingTopics && (
           <div className="mb-6 rounded-2xl border border-amber-500/30 bg-amber-500/10 px-4 py-3 text-sm text-amber-600 dark:text-amber-200">
             Some repositories do not expose topics yet. Add GitHub topics to improve filtering.
           </div>
         )}
 
-        {/* Projects Grid */}
+        {/* Featured Projects Section */}
         <motion.div
-          initial={{ y: 50, opacity: 0 }}
+          initial={{ y: 30, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
-          transition={{ delay: 0.4 }}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+          transition={{ delay: 0.2 }}
+          className="mb-16"
         >
-          <AnimatePresence mode="wait">
-            {filteredProjects.map((project, index) => (
-              <motion.div
-                key={project._id || project.id || project.github}
-                layout
-                initial={{ scale: 0.8, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                exit={{ scale: 0.8, opacity: 0 }}
-                transition={{ delay: index * 0.1 }}
-                whileHover={{ y: -10, scale: 1.02 }}
-                className="group"
-              >
-                <ProjectCard
-                  project={project}
-                  onClick={() => setSelectedProject(project)}
-                />
-              </motion.div>
-            ))}
-          </AnimatePresence>
+          <div className="flex items-center gap-3 mb-8">
+            <div className="h-px flex-1 bg-gradient-to-r from-transparent via-red-500/50 to-transparent" />
+            <h2 className="text-2xl md:text-3xl font-display font-bold">
+              <span className="text-red-500">Featured</span> Projects
+            </h2>
+            <div className="h-px flex-1 bg-gradient-to-r from-transparent via-red-500/50 to-transparent" />
+          </div>
+
+          {featuredProjects.length > 0 ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              <AnimatePresence mode="wait">
+                {featuredProjects.map((project, index) => (
+                  <motion.div
+                    key={project.id || project.github}
+                    layout
+                    initial={{ scale: 0.8, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    exit={{ scale: 0.8, opacity: 0 }}
+                    transition={{ delay: index * 0.1 }}
+                    whileHover={{ y: -10, scale: 1.02 }}
+                    className="group"
+                  >
+                    <ProjectCard
+                      project={project}
+                      onClick={() => setSelectedProject(project)}
+                      featured
+                    />
+                  </motion.div>
+                ))}
+              </AnimatePresence>
+            </div>
+          ) : (
+            <div className="text-center py-8 text-gray-500 dark:text-gray-400">
+              <p>No featured projects yet. Add the "portfolio" topic to your GitHub repos to feature them here.</p>
+            </div>
+          )}
         </motion.div>
 
-        {/* Empty State */}
-        {filteredProjects.length === 0 && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            className="text-center py-16"
-          >
-            <HiCode className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-            <p className="text-gray-600 dark:text-gray-400 text-lg">No projects found for this filter</p>
-            <button
-              onClick={() => setFilter('all')}
-              className="cursor-target mt-4 text-red-500 font-medium hover:text-red-600"
+        {/* Other Projects Section */}
+        <motion.div
+          initial={{ y: 30, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ delay: 0.4 }}
+        >
+          <div className="flex items-center gap-3 mb-6">
+            <div className="h-px flex-1 bg-gradient-to-r from-transparent via-gray-500/30 to-transparent" />
+            <h2 className="text-2xl md:text-3xl font-display font-bold text-gray-700 dark:text-gray-300">
+              Other Projects
+            </h2>
+            <div className="h-px flex-1 bg-gradient-to-r from-transparent via-gray-500/30 to-transparent" />
+          </div>
+
+          {/* Filter Buttons for Other Projects */}
+          <div className="flex flex-wrap justify-center gap-3 mb-8">
+            {filters.map((tech) => (
+              <button
+                key={tech}
+                onClick={() => setFilter(tech)}
+                className={`cursor-target px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${filter === tech
+                  ? 'bg-gray-700 dark:bg-gray-300 text-white dark:text-black'
+                  : 'bg-white dark:bg-black text-black dark:text-white border border-black/20 dark:border-white/20 hover:border-gray-500'
+                  }`}
+              >
+                {tech === 'all' ? 'All' : tech}
+              </button>
+            ))}
+          </div>
+
+          {/* Other Projects Grid */}
+          {filteredOtherProjects.length > 0 ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              <AnimatePresence mode="wait">
+                {filteredOtherProjects.map((project, index) => (
+                  <motion.div
+                    key={project.id || project.github}
+                    layout
+                    initial={{ scale: 0.8, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    exit={{ scale: 0.8, opacity: 0 }}
+                    transition={{ delay: index * 0.05 }}
+                    whileHover={{ y: -10, scale: 1.02 }}
+                    className="group"
+                  >
+                    <ProjectCard
+                      project={project}
+                      onClick={() => setSelectedProject(project)}
+                    />
+                  </motion.div>
+                ))}
+              </AnimatePresence>
+            </div>
+          ) : (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              className="text-center py-12"
             >
-              Show all projects
-            </button>
-          </motion.div>
-        )}
+              <HiCode className="w-12 h-12 text-gray-400 mx-auto mb-3" />
+              <p className="text-gray-600 dark:text-gray-400">No projects found for this filter</p>
+              <button
+                onClick={() => setFilter('all')}
+                className="cursor-target mt-3 text-gray-600 dark:text-gray-400 font-medium hover:text-gray-800 dark:hover:text-gray-200"
+              >
+                Show all projects
+              </button>
+            </motion.div>
+          )}
+        </motion.div>
       </div>
 
       {/* Project Modal */}
@@ -177,6 +257,22 @@ const Projects = () => {
 };
 
 const ProjectCard = ({ project, onClick }) => {
+  const githubUsername = import.meta.env.VITE_GITHUB_USERNAME;
+  const [imgSrc, setImgSrc] = React.useState(
+    `https://raw.githubusercontent.com/${githubUsername}/${project.title}/main/preview/thumbnail.png`
+  );
+  const [imgFailed, setImgFailed] = React.useState(false);
+
+  const handleImgError = () => {
+    if (imgSrc.includes('preview/thumbnail.png')) {
+      // Fallback to OpenGraph image
+      setImgSrc(`https://opengraph.githubassets.com/1/${githubUsername}/${project.title}`);
+    } else {
+      // Both failed, show placeholder
+      setImgFailed(true);
+    }
+  };
+
   return (
     <div
       onClick={onClick}
@@ -184,11 +280,22 @@ const ProjectCard = ({ project, onClick }) => {
     >
       {/* Project Thumbnail */}
       <div className="aspect-video bg-red-500/10 relative overflow-hidden">
-        <div className="absolute inset-0 bg-black/10 dark:bg-black/40 group-hover:bg-black/5 dark:group-hover:bg-black/20 transition-all duration-300" />
-        <div className="absolute inset-0 flex items-center justify-center">
-          <HiCode className="w-12 h-12 text-red-500 group-hover:scale-110 transition-transform duration-300" />
-        </div>
-        
+        {!imgFailed ? (
+          <img
+            src={imgSrc}
+            alt={project.title}
+            onError={handleImgError}
+            className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+          />
+        ) : (
+          <>
+            <div className="absolute inset-0 bg-black/10 dark:bg-black/40 group-hover:bg-black/5 dark:group-hover:bg-black/20 transition-all duration-300" />
+            <div className="absolute inset-0 flex items-center justify-center">
+              <HiCode className="w-12 h-12 text-red-500 group-hover:scale-110 transition-transform duration-300" />
+            </div>
+          </>
+        )}
+
         {/* Hover Overlay */}
         <div className="absolute inset-0 bg-red-500/90 opacity-0 group-hover:opacity-100 transition-all duration-300 flex items-center justify-center">
           <div className="text-white text-center">
@@ -203,7 +310,7 @@ const ProjectCard = ({ project, onClick }) => {
         <h3 className="text-xl font-semibold mb-2 text-black dark:text-white transition-colors line-clamp-1">
           {project.title}
         </h3>
-        
+
         <p className="text-gray-600 dark:text-gray-400 text-sm mb-4 line-clamp-2">
           {project.description}
         </p>

@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Toaster } from 'react-hot-toast';
 import { AnimatePresence } from 'framer-motion';
 
@@ -19,59 +18,46 @@ import SkeletonGameOfLife from './components/SkeletonGameOfLife';
 // Styles
 import './App.css';
 
-
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      staleTime: 5 * 60 * 1000, // 5 minutes
-      cacheTime: 10 * 60 * 1000, // 10 minutes
-      retry: 2,
-    },
-  },
-});
-
 function App() {
   const [gameOfLifeActive, setGameOfLifeActive] = useState(false);
   return (
-    <QueryClientProvider client={queryClient}>
-      <Router>
-        <div className="min-h-screen bg-black text-white relative overflow-hidden pr-20">
-          <TargetCursor 
-            spinDuration={2}
-            hideDefaultCursor
-            parallaxOn
-            hoverDuration={0.2}
-          />
-          <SkeletonGameOfLife onActiveChange={setGameOfLifeActive} />
-          <Navbar />
-          
-          <main className="relative z-10">
-            <AnimatePresence mode="wait">
-              <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="/projects" element={<Projects />} />
-                <Route path="/blogs" element={<Blogs />} />
-                <Route path="/contact" element={<Contact />} />
-                <Route path="/about" element={<About />} />
-              </Routes>
-            </AnimatePresence>
-          </main>
-          
-          <Footer />
-          <Toaster 
-            position="bottom-right"
-            toastOptions={{
-              style: {
-                background: 'rgba(26, 26, 26, 0.9)',
-                color: '#fff',
-                border: '1px solid rgba(255, 255, 255, 0.3)',
-                backdropFilter: 'blur(10px)',
-              },
-            }}
-          />
-        </div>
-      </Router>
-    </QueryClientProvider>
+    <Router>
+      <div className="min-h-screen bg-black text-white relative overflow-hidden pr-20">
+        <TargetCursor
+          spinDuration={2}
+          hideDefaultCursor
+          parallaxOn
+          hoverDuration={0.2}
+        />
+        <SkeletonGameOfLife onActiveChange={setGameOfLifeActive} />
+        <Navbar />
+
+        <main className="relative z-10">
+          <AnimatePresence mode="wait">
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/projects" element={<Projects />} />
+              <Route path="/blogs" element={<Blogs />} />
+              <Route path="/contact" element={<Contact />} />
+              <Route path="/about" element={<About />} />
+            </Routes>
+          </AnimatePresence>
+        </main>
+
+        <Footer />
+        <Toaster
+          position="bottom-right"
+          toastOptions={{
+            style: {
+              background: 'rgba(26, 26, 26, 0.9)',
+              color: '#fff',
+              border: '1px solid rgba(255, 255, 255, 0.3)',
+              backdropFilter: 'blur(10px)',
+            },
+          }}
+        />
+      </div>
+    </Router>
   );
 }
 

@@ -1,11 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import { HiMail, HiUser, HiChat, HiPaperAirplane, HiLocationMarker, HiPhone } from 'react-icons/hi';
+import { HiMail, HiUser, HiChat, HiPaperAirplane, HiLocationMarker, HiPhone, HiCheckCircle } from 'react-icons/hi';
 import { FaGithub, FaLinkedin, FaTwitter, FaInstagram } from 'react-icons/fa';
-import { useContactForm } from '../hooks/useApi';
 
 const contactSchema = yup.object({
   name: yup
@@ -25,12 +24,13 @@ const contactSchema = yup.object({
 });
 
 const Contact = () => {
-  const contactMutation = useContactForm();
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting },
+    formState: { errors },
     reset,
   } = useForm({
     resolver: yupResolver(contactSchema),
@@ -38,12 +38,27 @@ const Contact = () => {
   });
 
   const onSubmit = async (data) => {
-    try {
-      await contactMutation.mutateAsync(data);
+    setIsSubmitting(true);
+
+    // Create mailto link with form data
+    const subject = encodeURIComponent(`Portfolio Contact from ${data.name}`);
+    const body = encodeURIComponent(`Name: ${data.name}\nEmail: ${data.email}\n\nMessage:\n${data.message}`);
+    const mailtoLink = `mailto:madmishra72@gmail.com?subject=${subject}&body=${body}`;
+
+    // Open email client
+    window.location.href = mailtoLink;
+
+    // Show success state
+    setTimeout(() => {
+      setIsSubmitting(false);
+      setIsSubmitted(true);
       reset();
-    } catch (error) {
-      console.error('Failed to send message:', error);
-    }
+
+      // Reset success message after 5 seconds
+      setTimeout(() => {
+        setIsSubmitted(false);
+      }, 5000);
+    }, 1000);
   };
 
   const contactInfo = [
@@ -92,7 +107,7 @@ const Contact = () => {
             Get In <span className="text-red-500">Touch</span>
           </h1>
           <p className="text-gray-600 dark:text-gray-400 text-lg max-w-2xl mx-auto">
-            Have a project in mind or just want to chat? I'd love to hear from you. 
+            Have a project in mind or just want to chat? I'd love to hear from you.
             Let's create something amazing together!
           </p>
         </motion.div>
@@ -111,117 +126,129 @@ const Contact = () => {
                 Send Me a Message
               </h2>
 
-              <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-                {/* Name Field */}
-                <div>
-                  <label htmlFor="name" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                    Your Name
-                  </label>
-                  <div className="relative">
-                    <HiUser className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 w-5 h-5" />
-                    <input
-                      {...register('name')}
-                      type="text"
-                      id="name"
-                      placeholder="John Doe"
-                      className={`w-full pl-10 pr-4 py-3 bg-white dark:bg-black border rounded-xl text-black dark:text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:border-transparent transition-all duration-200 ${
-                        errors.name
-                          ? 'border-red-500 focus:ring-red-500'
-                          : 'border-black/20 dark:border-white/20 focus:ring-red-500'
-                      }`}
-                    />
-                  </div>
-                  {errors.name && (
-                    <motion.p
-                      initial={{ opacity: 0, y: -10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      className="mt-1 text-sm text-red-500"
-                    >
-                      {errors.name.message}
-                    </motion.p>
-                  )}
-                </div>
-
-                {/* Email Field */}
-                <div>
-                  <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                    Email Address
-                  </label>
-                  <div className="relative">
-                    <HiMail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 w-5 h-5" />
-                    <input
-                      {...register('email')}
-                      type="email"
-                      id="email"
-                      placeholder="john@example.com"
-                      className={`w-full pl-10 pr-4 py-3 bg-white dark:bg-black border rounded-xl text-black dark:text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:border-transparent transition-all duration-200 ${
-                        errors.email
-                          ? 'border-red-500 focus:ring-red-500'
-                          : 'border-black/20 dark:border-white/20 focus:ring-red-500'
-                      }`}
-                    />
-                  </div>
-                  {errors.email && (
-                    <motion.p
-                      initial={{ opacity: 0, y: -10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      className="mt-1 text-sm text-red-500"
-                    >
-                      {errors.email.message}
-                    </motion.p>
-                  )}
-                </div>
-
-                {/* Message Field */}
-                <div>
-                  <label htmlFor="message" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                    Your Message
-                  </label>
-                  <textarea
-                    {...register('message')}
-                    id="message"
-                    rows={5}
-                    placeholder="Tell me about your project or just say hi!"
-                    className={`w-full px-4 py-3 bg-white dark:bg-black border rounded-xl text-black dark:text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:border-transparent transition-all duration-200 resize-none ${
-                      errors.message
-                        ? 'border-red-500 focus:ring-red-500'
-                        : 'border-black/20 dark:border-white/20 focus:ring-red-500'
-                    }`}
-                  />
-                  {errors.message && (
-                    <motion.p
-                      initial={{ opacity: 0, y: -10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      className="mt-1 text-sm text-red-500"
-                    >
-                      {errors.message.message}
-                    </motion.p>
-                  )}
-                </div>
-
-                {/* Submit Button */}
-                <motion.button
-                  type="submit"
-                  disabled={isSubmitting || contactMutation.isLoading}
-                  className={`cursor-target w-full py-3 px-6 rounded-xl font-medium transition-all duration-200 flex items-center justify-center gap-2 ${
-                    isSubmitting || contactMutation.isLoading
-                      ? 'bg-gray-400 cursor-not-allowed'
-                      : 'bg-red-500 text-white hover:bg-red-600'
-                  }`}
+              {isSubmitted ? (
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  className="text-center py-12"
                 >
-                  {isSubmitting || contactMutation.isLoading ? (
-                    <>
-                      <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                      Sending...
-                    </>
-                  ) : (
-                    <>
-                      <HiPaperAirplane className="w-5 h-5" />
-                      Send Message
-                    </>
-                  )}
-                </motion.button>
-              </form>
+                  <HiCheckCircle className="w-16 h-16 text-green-500 mx-auto mb-4" />
+                  <h3 className="text-xl font-semibold text-black dark:text-white mb-2">
+                    Email Client Opened!
+                  </h3>
+                  <p className="text-gray-600 dark:text-gray-400">
+                    Please send the email from your email client. I'll get back to you soon!
+                  </p>
+                </motion.div>
+              ) : (
+                <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+                  {/* Name Field */}
+                  <div>
+                    <label htmlFor="name" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                      Your Name
+                    </label>
+                    <div className="relative">
+                      <HiUser className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 w-5 h-5" />
+                      <input
+                        {...register('name')}
+                        type="text"
+                        id="name"
+                        placeholder="John Doe"
+                        className={`w-full pl-10 pr-4 py-3 bg-white dark:bg-black border rounded-xl text-black dark:text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:border-transparent transition-all duration-200 ${errors.name
+                            ? 'border-red-500 focus:ring-red-500'
+                            : 'border-black/20 dark:border-white/20 focus:ring-red-500'
+                          }`}
+                      />
+                    </div>
+                    {errors.name && (
+                      <motion.p
+                        initial={{ opacity: 0, y: -10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="mt-1 text-sm text-red-500"
+                      >
+                        {errors.name.message}
+                      </motion.p>
+                    )}
+                  </div>
+
+                  {/* Email Field */}
+                  <div>
+                    <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                      Email Address
+                    </label>
+                    <div className="relative">
+                      <HiMail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 w-5 h-5" />
+                      <input
+                        {...register('email')}
+                        type="email"
+                        id="email"
+                        placeholder="john@example.com"
+                        className={`w-full pl-10 pr-4 py-3 bg-white dark:bg-black border rounded-xl text-black dark:text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:border-transparent transition-all duration-200 ${errors.email
+                            ? 'border-red-500 focus:ring-red-500'
+                            : 'border-black/20 dark:border-white/20 focus:ring-red-500'
+                          }`}
+                      />
+                    </div>
+                    {errors.email && (
+                      <motion.p
+                        initial={{ opacity: 0, y: -10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="mt-1 text-sm text-red-500"
+                      >
+                        {errors.email.message}
+                      </motion.p>
+                    )}
+                  </div>
+
+                  {/* Message Field */}
+                  <div>
+                    <label htmlFor="message" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                      Your Message
+                    </label>
+                    <textarea
+                      {...register('message')}
+                      id="message"
+                      rows={5}
+                      placeholder="Tell me about your project or just say hi!"
+                      className={`w-full px-4 py-3 bg-white dark:bg-black border rounded-xl text-black dark:text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:border-transparent transition-all duration-200 resize-none ${errors.message
+                          ? 'border-red-500 focus:ring-red-500'
+                          : 'border-black/20 dark:border-white/20 focus:ring-red-500'
+                        }`}
+                    />
+                    {errors.message && (
+                      <motion.p
+                        initial={{ opacity: 0, y: -10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="mt-1 text-sm text-red-500"
+                      >
+                        {errors.message.message}
+                      </motion.p>
+                    )}
+                  </div>
+
+                  {/* Submit Button */}
+                  <motion.button
+                    type="submit"
+                    disabled={isSubmitting}
+                    className={`cursor-target w-full py-3 px-6 rounded-xl font-medium transition-all duration-200 flex items-center justify-center gap-2 ${isSubmitting
+                        ? 'bg-gray-400 cursor-not-allowed'
+                        : 'bg-red-500 text-white hover:bg-red-600'
+                      }`}
+                  >
+                    {isSubmitting ? (
+                      <>
+                        <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                        Opening Email...
+                      </>
+                    ) : (
+                      <>
+                        <HiPaperAirplane className="w-5 h-5" />
+                        Send Message
+                      </>
+                    )}
+                  </motion.button>
+                </form>
+              )}
             </div>
           </motion.div>
 
@@ -235,7 +262,7 @@ const Contact = () => {
             {/* Contact Information */}
             <div className="space-y-6">
               <h2 className="text-2xl font-semibold mb-6 text-black dark:text-white">Let's Connect</h2>
-              
+
               {contactInfo.map((info, index) => (
                 <motion.div
                   key={info.label}
@@ -291,8 +318,8 @@ const Contact = () => {
                 Available for Work
               </h3>
               <p className="text-gray-600 dark:text-gray-400 text-sm leading-relaxed">
-                I'm currently available for freelance projects and full-time opportunities. 
-                Whether you need help with web development, machine learning, or just want to discuss ideas, 
+                I'm currently available for freelance projects and full-time opportunities.
+                Whether you need help with web development, machine learning, or just want to discuss ideas,
                 I'd love to hear from you!
               </p>
             </div>

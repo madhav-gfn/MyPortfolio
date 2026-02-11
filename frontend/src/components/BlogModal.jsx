@@ -43,7 +43,7 @@ const BlogModal = ({ blog, isOpen, onClose, formatDate, getReadingTime }) => {
                   {/* Close Button */}
                   <button
                     onClick={onClose}
-                    className="absolute top-4 right-4 z-10 p-2 rounded-full bg-dark-900/50 text-gray-400 hover:text-white hover:bg-dark-900/80 transition-all duration-200"
+                    className="cursor-target absolute top-4 right-4 z-10 p-2 rounded-full bg-dark-900/50 text-gray-400 hover:text-white hover:bg-dark-900/80 transition-all duration-200"
                     aria-label="Close modal"
                   >
                     <HiX className="w-6 h-6" />
@@ -57,7 +57,7 @@ const BlogModal = ({ blog, isOpen, onClose, formatDate, getReadingTime }) => {
                         <Dialog.Title className="text-3xl md:text-4xl font-display font-bold text-white mb-4 pr-12 leading-tight">
                           {blog.title}
                         </Dialog.Title>
-                        
+
                         {/* Meta Information */}
                         <div className="flex flex-wrap items-center gap-4 text-sm text-gray-400">
                           <div className="flex items-center gap-2">
@@ -100,7 +100,7 @@ const BlogModal = ({ blog, isOpen, onClose, formatDate, getReadingTime }) => {
                         {blog.content.split('\n').map((paragraph, index) => {
                           // Skip empty paragraphs
                           if (!paragraph.trim()) return null;
-                          
+
                           return (
                             <motion.p
                               key={index}
@@ -131,7 +131,7 @@ const BlogModal = ({ blog, isOpen, onClose, formatDate, getReadingTime }) => {
                               </p>
                             )}
                           </div>
-                          
+
                           {/* Share buttons could go here */}
                           <div className="flex items-center gap-2">
                             <span className="text-sm text-gray-500">
