@@ -127,7 +127,7 @@ const Home = () => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.5, duration: 1 }}
-              className="hidden lg:block h-[80vh] relative"
+              className="block h-[50vh] sm:h-[60vh] lg:h-[80vh] relative"
             >
               <Lanyard position={[0, 0, 20]} gravity={[0, -40, 0]} />
             </motion.div>
