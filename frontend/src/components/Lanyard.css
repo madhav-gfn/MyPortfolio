@@ -8,4 +8,11 @@
     align-items: center;
     transform: scale(1);
     transform-origin: center;
+    touch-action: none;
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+.lanyard-wrapper canvas {
+    touch-action: none;
 }

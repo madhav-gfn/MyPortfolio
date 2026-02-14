@@ -160,9 +160,14 @@
 
   body {
     font-family: 'Inter', system-ui, sans-serif;
-    background: #000000;
-    color: #ffffff;
+    background: #000000 !important;
+    color: #ffffff !important;
     overflow-x: hidden;
+  }
+
+  /* Force dark theme on all elements */
+  * {
+    border-color: rgba(255, 255, 255, 0.2);
   }
 
   /* Focus styles */
@@ -173,12 +178,12 @@
 
   /* Selection styles */
   ::selection {
-    background: rgba(255, 255, 255, 0.2);
+    background: rgba(239, 68, 68, 0.3);
     color: #ffffff;
   }
 
   ::-moz-selection {
-    background: rgba(255, 255, 255, 0.2);
+    background: rgba(239, 68, 68, 0.3);
     color: #ffffff;
   }
 }

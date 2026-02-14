@@ -30,6 +30,7 @@ export default function Lanyard({ position = [0, 0, 30], gravity = [0, -40, 0], 
                 dpr={[1, isMobile ? 1.5 : 2]}
                 gl={{ alpha: transparent }}
                 onCreated={({ gl }) => gl.setClearColor(new THREE.Color(0x000000), transparent ? 0 : 1)}
+                style={{ touchAction: 'none' }}
             >
                 <ambientLight intensity={Math.PI} />
                 <Physics gravity={gravity} timeStep={isMobile ? 1 / 30 : 1 / 60}>
@@ -137,6 +138,22 @@ function Band({ maxSpeed = 50, minSpeed = 0, isMobile = false }) {
     curve.curveType = 'chordal';
     texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
 
+    const handlePointerDown = (e) => {
+        e.stopPropagation();
+        if (e.pointerType === 'touch' || e.pointerType === 'mouse') {
+            e.target.setPointerCapture(e.pointerId);
+            drag(new THREE.Vector3().copy(e.point).sub(vec.copy(card.current.translation())));
+        }
+    };
+
+    const handlePointerUp = (e) => {
+        e.stopPropagation();
+        if (e.target.hasPointerCapture(e.pointerId)) {
+            e.target.releasePointerCapture(e.pointerId);
+        }
+        drag(false);
+    };
+
     return (
         <>
             <group position={[0, 4, 0]}>
@@ -157,11 +174,13 @@ function Band({ maxSpeed = 50, minSpeed = 0, isMobile = false }) {
                         position={[0, -1.56, -0.05]}
                         onPointerOver={() => hover(true)}
                         onPointerOut={() => hover(false)}
-                        onPointerUp={e => (e.target.releasePointerCapture(e.pointerId), drag(false))}
-                        onPointerDown={e => (
-                            e.target.setPointerCapture(e.pointerId),
-                            drag(new THREE.Vector3().copy(e.point).sub(vec.copy(card.current.translation())))
-                        )}
+                        onPointerUp={handlePointerUp}
+                        onPointerDown={handlePointerDown}
+                        onPointerMove={(e) => {
+                            if (dragged) {
+                                e.stopPropagation();
+                            }
+                        }}
                     >
                         <mesh geometry={nodes.card.geometry}>
                             <meshPhysicalMaterial

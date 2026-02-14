@@ -2,6 +2,18 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Force dark theme globally */
+html {
+  color-scheme: dark;
+}
+
+html,
+body,
+#root {
+  background-color: #000000 !important;
+  color: #ffffff !important;
+}
+
 /* Base styles */
 * {
   margin: 0;

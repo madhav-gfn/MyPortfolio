@@ -89,7 +89,7 @@ const Projects = () => {
           <p className="text-red-500 text-lg mb-4">
             {isRateLimited ? 'GitHub API rate limit reached' : 'Failed to load projects'}
           </p>
-          <p className="text-gray-600 dark:text-gray-400">
+          <p className="text-gray-400">
             {isRateLimited
               ? 'Please try again later.'
               : error.message || 'Please try again later'}
@@ -116,7 +116,7 @@ const Projects = () => {
           <h1 className="text-4xl md:text-5xl font-display font-bold mb-4">
             My <span className="text-red-500">Projects</span>
           </h1>
-          <p className="text-gray-600 dark:text-gray-400 text-lg max-w-2xl mx-auto">
+          <p className="text-gray-400 text-lg max-w-2xl mx-auto">
             A collection of projects that showcase my skills in full-stack development,
             game development, and creative problem solving.
           </p>
@@ -163,7 +163,7 @@ const Projects = () => {
               </AnimatePresence>
             </div>
           ) : (
-            <div className="text-center py-8 text-gray-500 dark:text-gray-400">
+            <div className="text-center py-8 text-gray-400">
               <p>No featured projects yet. Add the "portfolio" topic to your GitHub repos to feature them here.</p>
             </div>
           )}
@@ -177,7 +177,7 @@ const Projects = () => {
         >
           <div className="flex items-center gap-3 mb-6">
             <div className="h-px flex-1 bg-gradient-to-r from-transparent via-gray-500/30 to-transparent" />
-            <h2 className="text-2xl md:text-3xl font-display font-bold text-gray-700 dark:text-gray-300">
+            <h2 className="text-2xl md:text-3xl font-display font-bold text-gray-300">
               Other Projects
             </h2>
             <div className="h-px flex-1 bg-gradient-to-r from-transparent via-gray-500/30 to-transparent" />
@@ -190,8 +190,8 @@ const Projects = () => {
                 key={tech}
                 onClick={() => setFilter(tech)}
                 className={`cursor-target px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${filter === tech
-                  ? 'bg-gray-700 dark:bg-gray-300 text-white dark:text-black'
-                  : 'bg-white dark:bg-black text-black dark:text-white border border-black/20 dark:border-white/20 hover:border-gray-500'
+                  ? 'bg-gray-300 text-black'
+                  : 'bg-black text-white border border-white/20 hover:border-gray-500'
                   }`}
               >
                 {tech === 'all' ? 'All' : tech}
@@ -229,10 +229,10 @@ const Projects = () => {
               className="text-center py-12"
             >
               <HiCode className="w-12 h-12 text-gray-400 mx-auto mb-3" />
-              <p className="text-gray-600 dark:text-gray-400">No projects found for this filter</p>
+              <p className="text-gray-400">No projects found for this filter</p>
               <button
                 onClick={() => setFilter('all')}
-                className="cursor-target mt-3 text-gray-600 dark:text-gray-400 font-medium hover:text-gray-800 dark:hover:text-gray-200"
+                className="cursor-target mt-3 text-gray-400 font-medium hover:text-gray-200"
               >
                 Show all projects
               </button>
@@ -271,7 +271,7 @@ const ProjectCard = ({ project, onClick }) => {
   return (
     <div
       onClick={onClick}
-      className="cursor-target relative bg-white/50 dark:bg-black/50 backdrop-blur-sm rounded-2xl border border-black/20 dark:border-white/20 hover:shadow-glow-lg transition-all duration-300 overflow-hidden group"
+      className="cursor-target relative bg-black/50 backdrop-blur-sm rounded-2xl border border-white/20 hover:shadow-glow-lg transition-all duration-300 overflow-hidden group"
     >
       {/* Project Thumbnail */}
       <div className="aspect-video bg-red-500/10 relative overflow-hidden">
@@ -284,7 +284,7 @@ const ProjectCard = ({ project, onClick }) => {
           />
         ) : (
           <>
-            <div className="absolute inset-0 bg-black/10 dark:bg-black/40 group-hover:bg-black/5 dark:group-hover:bg-black/20 transition-all duration-300" />
+            <div className="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-all duration-300" />
             <div className="absolute inset-0 flex items-center justify-center">
               <HiCode className="w-12 h-12 text-red-500 group-hover:scale-110 transition-transform duration-300" />
             </div>
@@ -302,11 +302,11 @@ const ProjectCard = ({ project, onClick }) => {
 
       {/* Content */}
       <div className="p-6">
-        <h3 className="text-xl font-semibold mb-2 text-black dark:text-white transition-colors line-clamp-1">
+        <h3 className="text-xl font-semibold mb-2 text-white transition-colors line-clamp-1">
           {project.title}
         </h3>
 
-        <p className="text-gray-600 dark:text-gray-400 text-sm mb-4 line-clamp-2">
+        <p className="text-gray-400 text-sm mb-4 line-clamp-2">
           {project.description}
         </p>
 
@@ -335,7 +335,7 @@ const ProjectCard = ({ project, onClick }) => {
               target="_blank"
               rel="noopener noreferrer"
               onClick={(e) => e.stopPropagation()}
-              className="cursor-target flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-red-500 transition-colors"
+              className="cursor-target flex items-center gap-2 text-gray-400 hover:text-red-500 transition-colors"
             >
               <FaGithub className="w-4 h-4" />
               <span className="text-sm">Code</span>
@@ -347,7 +347,7 @@ const ProjectCard = ({ project, onClick }) => {
               target="_blank"
               rel="noopener noreferrer"
               onClick={(e) => e.stopPropagation()}
-              className="cursor-target flex items-center gap-2 text-black dark:text-white hover:text-red-500 transition-colors"
+              className="cursor-target flex items-center gap-2 text-white hover:text-red-500 transition-colors"
             >
               <HiExternalLink className="w-4 h-4" />
               <span className="text-sm">Live Demo</span>
