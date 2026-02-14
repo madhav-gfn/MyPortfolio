@@ -22,7 +22,7 @@ function App() {
   const [gameOfLifeActive, setGameOfLifeActive] = useState(false);
   return (
     <Router>
-      <div className="min-h-screen bg-black text-white relative overflow-hidden pr-20">
+      <div className="min-h-screen bg-black text-white relative overflow-hidden pr-0 md:pr-20 pb-20 md:pb-0">
         <TargetCursor
           spinDuration={2}
           hideDefaultCursor
@@ -32,7 +32,7 @@ function App() {
         <SkeletonGameOfLife onActiveChange={setGameOfLifeActive} />
         <Navbar />
 
-        <main className="relative z-10">
+        <main className="relative z-10 pb-20 md:pb-0">
           <AnimatePresence mode="wait">
             <Routes>
               <Route path="/" element={<Home />} />
