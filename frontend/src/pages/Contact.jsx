@@ -63,7 +63,11 @@ const Contact = () => {
         setIsSubmitted(false);
       }, 5000);
     } catch (error) {
-      setSubmitError(error.message || 'Something went wrong. Please try again.');
+      if (error.message === 'Failed to fetch') {
+        setSubmitError('Unable to connect to the server. Please try again later.');
+      } else {
+        setSubmitError(error.message || 'Something went wrong. Please try again.');
+      }
     } finally {
       setIsSubmitting(false);
     }
