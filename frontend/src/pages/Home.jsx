@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { HiArrowRight } from 'react-icons/hi';
@@ -8,6 +8,7 @@ import {
   SiUnity, SiNodedotjs, SiMongodb
 } from 'react-icons/si';
 import { HiSparkles, HiCube, HiEye } from 'react-icons/hi';
+import toast from 'react-hot-toast';
 import Lanyard from '../components/Lanyard';
 
 // Import icons
@@ -16,6 +17,16 @@ import blogIcon from '../../icons/blog.png';
 import contactIcon from '../../icons/contactme.png';
 
 const Home = () => {
+  useEffect(() => {
+    if (!sessionStorage.getItem('homeVisited')) {
+      sessionStorage.setItem('homeVisited', 'true');
+      toast('Try Game of Life by clicking the skull on top left corner', {
+        duration: 5000,
+        icon: '💀',
+      });
+    }
+  }, []);
+
   const socialLinks = [
     { icon: FaGithub, href: 'https://github.com/madhav-gfn', label: 'GitHub' },
     { icon: FaLinkedin, href: 'https://linkedin.com/in/madhav-gfn', label: 'LinkedIn' },

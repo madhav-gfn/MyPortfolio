@@ -1,4 +1,5 @@
 import React, { useRef, useEffect, useState } from 'react';
+import toast from 'react-hot-toast';
 
 const SkeletonGameOfLife = ({ onActiveChange }) => {
   const canvasRef = useRef(null);
@@ -133,6 +134,12 @@ const SkeletonGameOfLife = ({ onActiveChange }) => {
     setIsActive(true);
     if (onActiveChange) onActiveChange(true);
     animate(0);
+
+    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+    toast(isMobile ? 'Try tapping on screen' : 'Try dragging cursor all over the screen', {
+      duration: 4000,
+      icon: '💀',
+    });
   };
 
   const disableSimulation = () => {
