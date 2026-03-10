@@ -43,7 +43,13 @@ const Contact = () => {
     setSubmitError(null);
 
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/contact`, {
+      // Ensure the API URL includes '/api' suffix but avoid doubling it
+      let apiUrl = import.meta.env.VITE_API_URL || '';
+      if (apiUrl && !apiUrl.endsWith('/api')) {
+        apiUrl += '/api';
+      }
+
+      const response = await fetch(`${apiUrl}/contact`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data),
