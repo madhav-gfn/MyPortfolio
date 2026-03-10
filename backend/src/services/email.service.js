@@ -14,6 +14,10 @@ const transporter = nodemailer.createTransport({
         user: config.email.user,
         pass: config.email.pass,
     },
+    // Force IPv4 to avoid ENETUNREACH issues on Render
+    tls: {
+        rejectUnauthorized: false
+    }
 });
 
 /**
