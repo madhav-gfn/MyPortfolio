@@ -39,14 +39,44 @@ const Projects = () => {
         }
 
         const repos = await response.json();
-        const formattedProjects = repos.map((repo) => ({
-          id: repo.id,
-          title: repo.name,
-          description: repo.description || 'No description provided.',
-          techStack: repo.topics?.length ? repo.topics : repo.language ? [repo.language] : [],
-          github: repo.html_url,
-          liveDemo: repo.homepage || '',
-        }));
+
+        // Filter relevant repos first to minimize API calls for languages
+        const relevantRepos = repos.filter(repo =>
+          repo.topics?.some(t => t.toLowerCase() === 'portfolio' || t.toLowerCase() === 'others')
+        );
+
+        const formattedProjects = await Promise.all(
+          relevantRepos.map(async (repo) => {
+            let languages = [];
+            try {
+              const langRes = await fetch(repo.languages_url, {
+                headers: { Accept: 'application/vnd.github+json' }
+              });
+              if (langRes.ok) {
+                const langData = await langRes.json();
+                languages = Object.keys(langData);
+              }
+            } catch (err) {
+              console.error(`Failed to fetch languages for ${repo.name}`, err);
+            }
+
+            const techStack = languages.length > 0
+              ? languages
+              : (repo.topics?.length ? repo.topics.filter(t => t.toLowerCase() !== 'portfolio' && t.toLowerCase() !== 'others') : repo.language ? [repo.language] : []);
+
+            return {
+              id: repo.id,
+              title: repo.name,
+              description: repo.description || 'No description provided.',
+              techStack: techStack,
+              topics: repo.topics || [],
+              github: repo.html_url,
+              liveDemo: repo.homepage || '',
+              createdAt: repo.created_at,
+            };
+          })
+        );
+
         setProjects(formattedProjects);
       } catch (err) {
         setError(err);
@@ -60,17 +90,15 @@ const Projects = () => {
 
   // Separate projects into featured (portfolio-tagged) and others
   const featuredProjects = projects.filter(project =>
-    project.techStack?.some(tech => tech.toLowerCase() === 'portfolio')
+    project.topics?.some(topic => topic.toLowerCase() === 'portfolio')
   );
   const otherProjects = projects.filter(project =>
-    project.techStack?.some(tech => tech.toLowerCase() === 'others')
+    project.topics?.some(topic => topic.toLowerCase() === 'others')
   );
 
-  // Get unique tech tags from other projects (excluding 'portfolio' and 'others')
+  // Get unique tech tags from other projects
   const otherTechs = otherProjects.length > 0
-    ? [...new Set(otherProjects.flatMap(project => project.techStack || []))]
-      .filter(tech => tech.toLowerCase() !== 'portfolio' && tech.toLowerCase() !== 'others')
-      .slice(0, 6)
+    ? [...new Set(otherProjects.flatMap(project => project.techStack || []))].slice(0, 6)
     : [];
   const filters = ['all', ...otherTechs];
 
