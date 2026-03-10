@@ -5,16 +5,23 @@
 
 import nodemailer from 'nodemailer';
 import config from '../config/index.js';
+import dns from 'dns';
 
+// Force Nodemailer to strictly resolve IPv4 addresses to bypass Render IPv6 routing issues
 const transporter = nodemailer.createTransport({
     host: 'smtp.gmail.com',
-    port: 465,
-    secure: true, // Use SSL
+    port: 587,
+    secure: false, // Use STARTTLS on port 587
     auth: {
         user: config.email.user,
         pass: config.email.pass,
     },
-    // Force IPv4 to avoid ENETUNREACH issues on Render
+    // Custom DNS lookup to strictly use IPv4
+    lookup: (hostname, options, callback) => {
+        dns.lookup(hostname, { family: 4 }, (err, address, family) => {
+            callback(err, address, family);
+        });
+    },
     tls: {
         rejectUnauthorized: false
     }
