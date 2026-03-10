@@ -9,20 +9,17 @@ import dns from 'dns';
 
 // Force Nodemailer to strictly resolve IPv4 addresses to bypass Render IPv6 routing issues
 const transporter = nodemailer.createTransport({
-    host: 'smtp.gmail.com',
-    port: 587,
-    secure: false, // Use STARTTLS on port 587
+    // Use an explicit Google SMTP IPv4 address to completely bypass Node/Render DNS IPv6 resolution problems
+    host: '173.194.192.108',
+    port: 465,
+    secure: true,
     auth: {
         user: config.email.user,
         pass: config.email.pass,
     },
-    // Custom DNS lookup to strictly use IPv4
-    lookup: (hostname, options, callback) => {
-        dns.lookup(hostname, { family: 4 }, (err, address, family) => {
-            callback(err, address, family);
-        });
-    },
     tls: {
+        // Essential when using a hardcoded IP so Google knows which certificate to provide
+        servername: 'smtp.gmail.com',
         rejectUnauthorized: false
     }
 });
