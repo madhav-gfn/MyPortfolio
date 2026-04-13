@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
+import emailjs from '@emailjs/browser';
 import { HiMail, HiUser, HiChat, HiPaperAirplane, HiLocationMarker, HiPhone, HiCheckCircle, HiExclamationCircle } from 'react-icons/hi';
 import { FaGithub, FaLinkedin, FaMedium, FaInstagram } from 'react-icons/fa';
 
@@ -43,23 +44,26 @@ const Contact = () => {
     setSubmitError(null);
 
     try {
-      // Ensure the API URL includes '/api' suffix but avoid doubling it
-      let apiUrl = import.meta.env.VITE_API_URL || '';
-      if (apiUrl && !apiUrl.endsWith('/api')) {
-        apiUrl += '/api';
+      const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID;
+      const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
+      const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
+
+      if (!serviceId || !templateId || !publicKey) {
+        throw new Error('Email service is not configured. Please contact me directly at madmishra72@gmail.com');
       }
 
-      const response = await fetch(`${apiUrl}/contact`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data),
-      });
-
-      const result = await response.json();
-
-      if (!response.ok) {
-        throw new Error(result.message || 'Failed to send message');
-      }
+      // Send email directly from the browser using EmailJS
+      await emailjs.send(
+        serviceId,
+        templateId,
+        {
+          from_name: data.name,
+          from_email: data.email,
+          message: data.message,
+          to_name: 'Madhav',
+        },
+        publicKey
+      );
 
       setIsSubmitted(true);
       reset();
@@ -69,8 +73,9 @@ const Contact = () => {
         setIsSubmitted(false);
       }, 5000);
     } catch (error) {
-      if (error.message === 'Failed to fetch') {
-        setSubmitError('Unable to connect to the server. Please try again later.');
+      if (error?.text) {
+        // EmailJS error format
+        setSubmitError(`Failed to send message: ${error.text}`);
       } else {
         setSubmitError(error.message || 'Something went wrong. Please try again.');
       }
