@@ -48,8 +48,8 @@ const Footer = () => {
                 transition={{ delay: 0.1 }}
                 className="text-gray-400 leading-relaxed mb-6 max-w-md"
               >
-                Passionate full-stack developer and game dev creating
-                innovative digital solutions that make a difference. Let's build something amazing together.
+                Passionate full-stack developer and AI engineer building
+                scalable systems and intelligent applications. Let's build something amazing together.
               </motion.p>
 
               <motion.div

@@ -145,8 +145,8 @@ const Projects = () => {
             My <span className="text-red-500">Projects</span>
           </h1>
           <p className="text-gray-400 text-lg max-w-2xl mx-auto">
-            A collection of projects that showcase my skills in full-stack development,
-            game development, and creative problem solving.
+            A collection of projects that showcase my skills in distributed systems,
+            AI/LLM engineering, and full-stack development.
           </p>
         </motion.div>
 

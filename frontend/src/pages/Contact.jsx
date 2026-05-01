@@ -353,7 +353,7 @@ const Contact = () => {
               </h3>
               <p className="text-gray-400 text-sm leading-relaxed">
                 I'm currently available for freelance projects and full-time opportunities.
-                Whether you need help with web development, game development, or just want to discuss ideas,
+                Whether you need help with backend systems, AI/LLM applications, cloud infrastructure, or just want to discuss ideas,
                 I'd love to hear from you!
               </p>
             </div>

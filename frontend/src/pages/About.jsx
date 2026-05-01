@@ -2,7 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 
 const About = () => {
-  const summary = "Computer Science undergraduate specializing in HCI and Game Technology. Skilled in building performant systems, cross-platform applications, and gameplay mechanics.";
+  const summary = "Computer Science undergraduate specializing in HCI and Gaming Technology at IIIT Nagpur. Passionate about building scalable distributed systems, AI-powered applications, and performant backends. Experienced with LLM orchestration, cloud infrastructure, and full-stack development.";
 
   const education = {
     degree: 'B.Tech in Computer Science and Engineering',
@@ -10,74 +10,89 @@ const About = () => {
     period: 'July 2023 – June 2027',
     gpa: '7.96',
     specialization: 'Human Computer Interaction & Gaming Technology',
-    coursework: ['Data Structures & Algorithms', 'Operating Systems', 'DBMS', 'HCI', 'Software Engineering']
+    coursework: ['Data Structures & Algorithms', 'Operating Systems', 'DBMS', 'OOP', 'Algorithm Design', 'Human Computer Interaction', 'Software Engineering']
   };
 
   const skills = {
     'Languages': [
-      { name: 'C++', level: 85 },
-      { name: 'JavaScript', level: 80 },
-      { name: 'C', level: 80 },
-      { name: 'Python', level: 75 },
-      { name: 'C#', level: 60 },
-      { name: 'Java', level: 40 }
+      { name: 'C++', level: 90 },
+      { name: 'C', level: 85 },
+      { name: 'Python', level: 85 },
+      { name: 'JavaScript', level: 85 },
+      { name: 'C#', level: 60 }
     ],
-    'Web & Backend': [
+    'Systems & Backend': [
       { name: 'Node.js', level: 85 },
-      { name: 'Express.js', level: 80 },
-      { name: 'React', level: 65 }
-    ],
-    'Databases': [
-      { name: 'MSSQL', level: 80 },
+      { name: 'Express.js', level: 85 },
+      { name: 'FastAPI', level: 80 },
+      { name: 'PostgreSQL', level: 85 },
       { name: 'MongoDB', level: 80 },
-      { name: 'PostgreSQL', level: 80 }
+      { name: 'Redis', level: 75 },
+      { name: 'RESTful APIs', level: 90 }
     ],
-    'Game Development': [
-      { name: 'Unity', level: 85 },
-      { name: 'Unreal', level: 85 },
-      { name: 'Gameplay Systems', level: 85 }
+    'AI & LLM': [
+      { name: 'LangGraph', level: 80 },
+      { name: 'RAG (FAISS)', level: 80 },
+      { name: 'Groq API', level: 85 },
+      { name: 'LangChain', level: 75 },
+      { name: 'HuggingFace', level: 70 }
     ],
-    'Cloud & DevOps': [
-      { name: 'Git', level: 90 },
-      { name: 'Agile/DevOps', level: 80 },
-      { name: 'Oracle Cloud', level: 70 },
-      { name: 'Google Cloud', level: 65 }
+    'Cloud & Infra': [
+      { name: 'Google Cloud', level: 70 },
+      { name: 'Oracle Cloud (OCI)', level: 75 },
+      { name: 'Prometheus', level: 70 },
+      { name: 'Grafana', level: 70 },
+      { name: 'VirtualBox', level: 65 }
+    ],
+    'Dev Tools': [
+      { name: 'Git / GitHub', level: 90 },
+      { name: 'Postman', level: 85 },
+      { name: 'Jira', level: 75 },
+      { name: 'Agile/Scrum', level: 80 }
     ]
   };
 
   const projects = [
     {
-      title: 'GamesLog: Social Gaming Tracker',
-      period: 'Dec 2025 – Present',
-      description: 'Relational backend for user libraries, play sessions, reviews, and social feeds with normalized PostgreSQL tables.',
-      tech: ['Node.js', 'PostgreSQL', 'Prisma', 'JWT'],
-      highlights: ['JWT authentication', 'Analytics endpoints', 'Paginated feeds']
+      title: 'TeacherJi: AI Learning Platform',
+      period: 'April 2026',
+      description: 'Architected a 3-agent tutoring system with a FAISS-backed retrieval pipeline over NCERT textbooks, eliminating LLM hallucination.',
+      tech: ['FastAPI', 'React', 'LangGraph', 'Groq', 'FAISS', 'PostgreSQL', 'Redis'],
+      highlights: ['3-agent LangGraph orchestration', 'Sub-200ms inference with Groq', 'Adaptive feedback loops']
     },
     {
       title: 'L-Systems & IFS Studio',
-      period: 'Nov 2025 – Present',
-      description: 'Procedural art generator combining stochastic L-Systems with IFS-based fractals.',
-      tech: ['Python', 'Streamlit', 'NumPy', 'PIL'],
-      highlights: ['Real-time preview', '0.2–1.5s generation', 'SVG/PNG export']
+      period: 'Nov 2025 – April 2026',
+      description: 'Engineered a Python OOP state machine parsing 23 graphical commands to expand stochastic grammars up to 5,000,000 characters.',
+      tech: ['Python', 'FastAPI', 'React', 'Three.js', 'NumPy'],
+      highlights: ['500k real-time coordinate rendering', 'Sub-1.5s renders for 100k-point fractals', 'Vectorized NumPy math']
     },
     {
-      title: 'Task Scheduling in Cloud Computing',
-      period: 'Sep 2024 – Oct 2024',
-      description: 'MAC-HDE algorithm implementation for heterogeneous cloud task scheduling.',
-      tech: ['Python', 'SQLite'],
-      highlights: ['15–16% performance improvement']
+      title: 'GamesLog: Social Gaming Tracker',
+      period: 'Dec 2025 – April 2026',
+      description: 'Designed a normalized relational backend with 10 PostgreSQL tables and 18 custom indexes; AI-powered recommendation engine.',
+      tech: ['Node.js', 'PostgreSQL', 'Prisma', 'RESTful API', 'Groq', 'Llama 3'],
+      highlights: ['50+ RESTful endpoints', 'AI game recommendations', 'Horizontal scalability design']
+    },
+    {
+      title: 'Linux Fleet Management System',
+      period: 'Jan 2026 – April 2026',
+      description: 'Deployed a 3-node Ubuntu VM fleet with centralized monitoring; Prometheus + Node Exporter collecting 150+ metrics.',
+      tech: ['Linux', 'Prometheus', 'Grafana', 'Node Exporter', 'SSH'],
+      highlights: ['150+ metrics at 15s intervals', 'Custom Grafana dashboards', 'Passwordless SSH automation']
     }
   ];
 
   const achievements = [
-    { title: '1st Place', event: 'TECHNEX\'25 Game Jam', org: 'IIT BHU', detail: 'Deception-driven tower defense' },
-    { title: '1st Prize', event: 'Tantarfiesta\'25 Designathon', org: 'UI/UX Hackathon', detail: 'Emotion-based journaling app' },
-    { title: '3rd Runner-Up', event: 'Exergy Case Study Challenge', org: 'IIT Kanpur', detail: '2025' }
+    { title: '1st Place / 20+ teams', event: 'TECHNEX\'25 Game Jam', org: 'IIT BHU (2025)', detail: 'Deception-driven tower defense' },
+    { title: '1st Prize / 30+ teams', event: 'Tantarfiesta\'25 Designathon', org: 'UI/UX Hackathon', detail: 'Non-linear, emotion-based journaling app design' },
+    { title: '3rd Runner-Up', event: 'Exergy Case Study Challenge', org: 'IIT Kanpur (2025)', detail: 'Case study competition' }
   ];
 
   const certifications = [
-    { name: 'Introduction to Game Design', issuer: 'Epic Games', id: 'EIDMET191FFV' },
-    { name: 'Oracle Cloud Infrastructure 2025 Certified Foundations Associate', issuer: 'Oracle', link: 'https://catalog-education.oracle.com/ords/certview/sharebadge?id=02AA11BCE15CE27577B203DF581341C6CA5E2A94D689CD2752ECF51512BE3034' }
+    { name: 'Oracle Cloud Infrastructure 2025 Certified Foundations Associate', issuer: 'Oracle • Nov 2025', link: 'https://catalog-education.oracle.com/ords/certview/sharebadge?id=02AA11BCE15CE27577B203DF581341C6CA5E2A94D689CD2752ECF51512BE3034' },
+    { name: 'Fundamentals of Accelerated Computing with CUDA Python', issuer: 'NVIDIA • April 2026', link: null },
+    { name: 'Complete Generative AI Course with LangChain and HuggingFace', issuer: 'Udemy • Jan–April 2026', link: null }
   ];
 
   return (
@@ -295,9 +310,9 @@ const About = () => {
                       <a href={cert.link} target="_blank" rel="noopener noreferrer" className="text-red-500 text-xs hover:text-red-400 transition-colors">
                         View Credential →
                       </a>
-                    ) : (
+                    ) : cert.id ? (
                       <span className="text-gray-500 text-xs">ID: {cert.id}</span>
-                    )}
+                    ) : null}
                   </motion.div>
                 ))}
               </div>
@@ -314,7 +329,7 @@ const About = () => {
         >
           <h2 className="text-2xl font-display font-bold mb-6">Areas of Interest</h2>
           <div className="flex flex-wrap justify-center gap-3">
-            {['Scalable Systems', 'HCI', 'Game Design', 'Performance Optimization'].map((interest, idx) => (
+            {['Software Quality', 'Scalable Systems', 'HCI', 'Game Design', 'Performance Optimization'].map((interest, idx) => (
               <motion.span
                 key={idx}
                 initial={{ scale: 0 }}

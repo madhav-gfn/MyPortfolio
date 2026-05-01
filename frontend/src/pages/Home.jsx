@@ -4,10 +4,10 @@ import { Link } from 'react-router-dom';
 import { HiArrowRight } from 'react-icons/hi';
 import { FaGithub, FaLinkedin, FaMedium, FaInstagram } from 'react-icons/fa';
 import {
-  SiPython, SiCplusplus, SiOpencv, SiUnrealengine,
-  SiUnity, SiNodedotjs, SiMongodb
+  SiPython, SiCplusplus, SiFastapi, SiReact,
+  SiPostgresql, SiNodedotjs, SiRedis
 } from 'react-icons/si';
-import { HiSparkles, HiCube, HiEye } from 'react-icons/hi';
+import { HiSparkles, HiServer, HiChartBar } from 'react-icons/hi';
 import toast from 'react-hot-toast';
 import Lanyard from '../components/Lanyard';
 
@@ -97,9 +97,9 @@ const Home = () => {
                 >
                   <span>Full Stack Developer</span>
                   <span className="hidden md:inline text-red-500">•</span>
-                  <span>Game Dev</span>
+                  <span>AI & LLM Engineer</span>
                   <span className="hidden md:inline text-red-500">•</span>
-                  <span>Gen AI enthusiast</span>
+                  <span>Systems Builder</span>
                 </motion.div>
 
                 <motion.p
@@ -108,7 +108,7 @@ const Home = () => {
                   transition={{ delay: 0.5 }}
                   className="text-lg text-gray-500 max-w-xl leading-relaxed pt-4"
                 >
-                  Crafting immersive digital experiences and intelligent systems.
+                  Building scalable distributed systems and AI-powered applications.
                   Pushing the boundaries of what's possible with code.
                 </motion.p>
 
@@ -226,14 +226,14 @@ const Home = () => {
             {[
               { name: 'Python', icon: SiPython },
               { name: 'C++', icon: SiCplusplus },
-              { name: 'OpenCV', icon: SiOpencv },
-              { name: 'Gen AI', icon: HiSparkles },
-              { name: 'Unreal Engine', icon: SiUnrealengine },
-              { name: 'Unity', icon: SiUnity },
-              { name: 'AR', icon: HiCube },
-              { name: 'VR', icon: HiEye },
+              { name: 'FastAPI', icon: SiFastapi },
+              { name: 'React', icon: SiReact },
               { name: 'Node.js', icon: SiNodedotjs },
-              { name: 'MongoDB', icon: SiMongodb },
+              { name: 'PostgreSQL', icon: SiPostgresql },
+              { name: 'Redis', icon: SiRedis },
+              { name: 'LangGraph / AI', icon: HiSparkles },
+              { name: 'Prometheus', icon: HiServer },
+              { name: 'Grafana', icon: HiChartBar },
             ].map((tech, index) => (
               <motion.span
                 key={tech.name}
