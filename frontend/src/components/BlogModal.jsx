@@ -2,7 +2,7 @@ import React from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import { Fragment } from 'react';
 import { motion } from 'framer-motion';
-import { HiX, HiCalendar, HiUser, HiClock } from 'react-icons/hi';
+import { HiX, HiCalendar, HiUser, HiClock, HiExternalLink } from 'react-icons/hi';
 
 const BlogModal = ({ blog, isOpen, onClose, formatDate, getReadingTime }) => {
   if (!blog) return null;
@@ -93,27 +93,28 @@ const BlogModal = ({ blog, isOpen, onClose, formatDate, getReadingTime }) => {
                       )}
                     </div>
 
+                    {/* Read on Medium CTA */}
+                    {blog.link && (
+                      <div className="px-8 pb-2">
+                        <a
+                          href={blog.link}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="cursor-target inline-flex items-center gap-2 px-4 py-2 bg-red-500 hover:bg-red-600 text-white text-sm font-medium rounded-lg transition-colors"
+                        >
+                          Read on Medium
+                          <HiExternalLink className="w-4 h-4" />
+                        </a>
+                      </div>
+                    )}
+
                     {/* Content */}
                     <div className="px-8 pb-8">
-                      <div className="prose prose-invert prose-lg max-w-none">
-                        {/* Split content into paragraphs and render */}
-                        {blog.content.split('\n').map((paragraph, index) => {
-                          // Skip empty paragraphs
-                          if (!paragraph.trim()) return null;
-
-                          return (
-                            <motion.p
-                              key={index}
-                              initial={{ opacity: 0, y: 20 }}
-                              animate={{ opacity: 1, y: 0 }}
-                              transition={{ delay: index * 0.1 }}
-                              className="text-gray-300 leading-relaxed mb-6 text-lg"
-                            >
-                              {paragraph}
-                            </motion.p>
-                          );
-                        })}
-                      </div>
+                      {/* Medium articles arrive as HTML from the author's own feed. */}
+                      <div
+                        className="medium-article"
+                        dangerouslySetInnerHTML={{ __html: blog.content }}
+                      />
 
                       {/* Footer */}
                       <motion.div
@@ -135,7 +136,7 @@ const BlogModal = ({ blog, isOpen, onClose, formatDate, getReadingTime }) => {
                           {/* Share buttons could go here */}
                           <div className="flex items-center gap-2">
                             <span className="text-sm text-gray-500">
-                              {blog.content.split(' ').length} words
+                              {(blog.text || blog.content || '').replace(/<[^>]+>/g, ' ').split(/\s+/).filter(Boolean).length} words
                             </span>
                           </div>
                         </div>

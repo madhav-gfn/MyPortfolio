@@ -242,29 +242,61 @@ const AskMadhav = () => {
         )}
       </AnimatePresence>
 
-      {/* Launcher */}
-      <motion.button
-        onClick={() => setIsOpen((v) => !v)}
-        aria-label={isOpen ? 'Close Ask Madhav chat' : 'Open Ask Madhav chat'}
-        whileHover={{ scale: 1.06 }}
-        whileTap={{ scale: 0.94 }}
-        className="cursor-target relative w-14 h-14 rounded-full bg-gradient-to-br from-red-500 to-red-700 text-white flex items-center justify-center shadow-lg shadow-red-900/40"
-      >
-        {!isOpen && (
-          <span className="absolute inset-0 rounded-full bg-red-500 animate-ping opacity-30" />
-        )}
-        <AnimatePresence mode="wait" initial={false}>
-          {isOpen ? (
-            <motion.span key="x" initial={{ rotate: -90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: 90, opacity: 0 }}>
-              <HiX className="w-6 h-6" />
-            </motion.span>
-          ) : (
-            <motion.span key="chat" initial={{ rotate: 90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: -90, opacity: 0 }}>
-              <HiChat className="w-6 h-6" />
-            </motion.span>
+      {/* Launcher row: floating nudge + button */}
+      <div className="flex items-center gap-3">
+        {/* "Ask me anything" nudge (to the left of the button) */}
+        <AnimatePresence>
+          {!isOpen && showTip && (
+            <motion.button
+              key="tip"
+              onClick={() => setIsOpen(true)}
+              initial={{ opacity: 0, x: 12, scale: 0.8 }}
+              animate={{ opacity: 1, x: 0, scale: 1 }}
+              exit={{ opacity: 0, x: 12, scale: 0.8 }}
+              className="cursor-target relative hidden sm:flex items-center gap-2 px-4 py-2.5 rounded-2xl rounded-br-sm bg-white text-black text-sm font-medium shadow-xl shadow-red-900/20 whitespace-nowrap"
+            >
+              <span>Ask me anything</span>
+              <span className="text-base">👋</span>
+              {/* little tail pointing to the button */}
+              <span className="absolute -right-1.5 bottom-2 w-3 h-3 bg-white rotate-45" />
+            </motion.button>
           )}
         </AnimatePresence>
-      </motion.button>
+
+        {/* Floaty launcher */}
+        <motion.button
+          onClick={() => setIsOpen((v) => !v)}
+          aria-label={isOpen ? 'Close Ask Madhav chat' : 'Open Ask Madhav chat'}
+          animate={isOpen ? { y: 0 } : { y: [0, -9, 0] }}
+          transition={isOpen ? { duration: 0.2 } : { duration: 3.2, repeat: Infinity, ease: 'easeInOut' }}
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.92 }}
+          className="cursor-target relative w-14 h-14 rounded-full bg-gradient-to-br from-red-500 to-red-700 text-white flex items-center justify-center shadow-lg shadow-red-900/50"
+        >
+          {/* Pulsing glow rings when closed */}
+          {!isOpen && (
+            <>
+              <span className="absolute inset-0 rounded-full bg-red-500 animate-ping opacity-30" />
+              <motion.span
+                className="absolute -inset-2 rounded-full border border-red-500/40"
+                animate={{ scale: [1, 1.35, 1], opacity: [0.5, 0, 0.5] }}
+                transition={{ duration: 2.6, repeat: Infinity, ease: 'easeInOut' }}
+              />
+            </>
+          )}
+          <AnimatePresence mode="wait" initial={false}>
+            {isOpen ? (
+              <motion.span key="x" initial={{ rotate: -90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: 90, opacity: 0 }}>
+                <HiX className="w-6 h-6" />
+              </motion.span>
+            ) : (
+              <motion.span key="chat" initial={{ rotate: 90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: -90, opacity: 0 }}>
+                <HiChat className="w-6 h-6" />
+              </motion.span>
+            )}
+          </AnimatePresence>
+        </motion.button>
+      </div>
     </div>
   );
 };

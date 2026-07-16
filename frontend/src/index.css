@@ -148,3 +148,92 @@ img {
     animation: none !important;
   }
 }
+
+/* ============================================================
+   Rendered Medium article HTML (.medium-article)
+   Theme-matched typography since no @tailwindcss/typography.
+   ============================================================ */
+.medium-article {
+  color: #d1d5db;
+  font-size: 1.075rem;
+  line-height: 1.8;
+  word-break: break-word;
+}
+.medium-article > *:first-child { margin-top: 0; }
+.medium-article p { margin: 0 0 1.4rem; }
+.medium-article h1,
+.medium-article h2,
+.medium-article h3,
+.medium-article h4 {
+  color: #ffffff;
+  font-family: 'Poppins', system-ui, sans-serif;
+  font-weight: 700;
+  line-height: 1.25;
+  margin: 2.2rem 0 1rem;
+}
+.medium-article h1 { font-size: 1.9rem; }
+.medium-article h2 { font-size: 1.6rem; }
+.medium-article h3 { font-size: 1.3rem; }
+.medium-article h4 { font-size: 1.1rem; }
+.medium-article a {
+  color: #ef4444;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.medium-article a:hover { color: #f87171; }
+.medium-article strong { color: #f3f4f6; }
+.medium-article em { color: #e5e7eb; }
+.medium-article img {
+  border-radius: 0.9rem;
+  margin: 1.6rem auto;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+.medium-article figure { margin: 1.6rem 0; }
+.medium-article figcaption {
+  text-align: center;
+  font-size: 0.85rem;
+  color: #9ca3af;
+  margin-top: 0.5rem;
+}
+.medium-article blockquote {
+  border-left: 3px solid #ef4444;
+  padding: 0.2rem 0 0.2rem 1.2rem;
+  margin: 1.6rem 0;
+  color: #e5e7eb;
+  font-style: italic;
+  background: rgba(239, 68, 68, 0.05);
+  border-radius: 0 0.5rem 0.5rem 0;
+}
+.medium-article ul,
+.medium-article ol {
+  margin: 0 0 1.4rem;
+  padding-left: 1.5rem;
+}
+.medium-article ul { list-style: disc; }
+.medium-article ol { list-style: decimal; }
+.medium-article li { margin-bottom: 0.5rem; }
+.medium-article pre {
+  background: #0a0a0a;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 0.75rem;
+  padding: 1rem 1.2rem;
+  overflow-x: auto;
+  margin: 1.6rem 0;
+}
+.medium-article code {
+  background: rgba(255, 255, 255, 0.08);
+  padding: 0.15rem 0.4rem;
+  border-radius: 0.35rem;
+  font-size: 0.9em;
+  color: #fca5a5;
+}
+.medium-article pre code {
+  background: transparent;
+  padding: 0;
+  color: #e5e7eb;
+}
+.medium-article hr {
+  border: none;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  margin: 2rem 0;
+}
