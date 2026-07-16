@@ -58,7 +58,35 @@ const feedUrl = (username) => {
   return `https://medium.com/feed/${handle}`;
 };
 
-// --- Source 1: rss2json ---------------------------------------------------
+// Parse a Medium RSS XML string (browser DOMParser) into normalized posts.
+function parseFeedXml(xml) {
+  const doc = new DOMParser().parseFromString(xml, 'text/xml');
+  if (doc.querySelector('parsererror')) throw new Error('Invalid RSS XML');
+  const items = [...doc.querySelectorAll('item')];
+  const get = (el, tag) => el.getElementsByTagName(tag)[0]?.textContent || '';
+  return items.map((el) =>
+    normalize({
+      link: get(el, 'link'),
+      guid: get(el, 'guid'),
+      title: get(el, 'title'),
+      author: get(el, 'dc:creator'),
+      pubDate: get(el, 'pubDate'),
+      categories: [...el.getElementsByTagName('category')].map((c) => c.textContent),
+      contentHtml: get(el, 'content:encoded'),
+      description: get(el, 'description'),
+    })
+  );
+}
+
+// --- Source 1 (primary): our own /api/medium (Vercel fn / Vite dev middleware)
+async function viaLocalApi(username) {
+  const handle = username.startsWith('@') ? username : `@${username}`;
+  const res = await fetch(`/api/medium?u=${encodeURIComponent(handle)}`);
+  if (!res.ok) throw new Error(`/api/medium HTTP ${res.status}`);
+  return parseFeedXml(await res.text());
+}
+
+// --- Source 2 (fallback): rss2json -----------------------------------------
 async function viaRss2Json(username) {
   const res = await fetch(
     `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(feedUrl(username))}`
@@ -81,38 +109,33 @@ async function viaRss2Json(username) {
   );
 }
 
-// --- Source 2: allorigins raw proxy + DOMParser ---------------------------
+// --- Source 3 (fallback): allorigins raw proxy -----------------------------
 async function viaAllOrigins(username) {
   const res = await fetch(
     `https://api.allorigins.win/raw?url=${encodeURIComponent(feedUrl(username))}`
   );
   if (!res.ok) throw new Error(`allorigins HTTP ${res.status}`);
-  const xml = await res.text();
-  const doc = new DOMParser().parseFromString(xml, 'text/xml');
-  const items = [...doc.querySelectorAll('item')];
-  const get = (el, tag) => el.getElementsByTagName(tag)[0]?.textContent || '';
-  return items.map((el) =>
-    normalize({
-      link: get(el, 'link'),
-      guid: get(el, 'guid'),
-      title: get(el, 'title'),
-      author: get(el, 'dc:creator'),
-      pubDate: get(el, 'pubDate'),
-      categories: [...el.getElementsByTagName('category')].map((c) => c.textContent),
-      contentHtml: get(el, 'content:encoded'),
-      description: get(el, 'description'),
-    })
-  );
+  return parseFeedXml(await res.text());
 }
 
 export async function fetchMediumPosts(username) {
   if (!username) throw new Error('No Medium username configured');
-  try {
-    return await viaRss2Json(username);
-  } catch (err) {
-    // Fall back to the raw proxy so a single service outage isn't fatal.
-    return await viaAllOrigins(username);
+  // Try our own endpoint first (fresh, reliable), then public proxies so a
+  // single outage — or local dev without the function — isn't fatal.
+  const sources = [viaLocalApi, viaRss2Json, viaAllOrigins];
+  let lastErr;
+  for (const source of sources) {
+    try {
+      const posts = await source(username);
+      if (posts.length > 0) return posts; // got real data — done
+      lastErr = new Error('empty feed'); // keep trying other sources
+    } catch (err) {
+      lastErr = err;
+    }
   }
+  // Every source was empty or failed. If it was genuinely empty, return [].
+  if (lastErr && lastErr.message === 'empty feed') return [];
+  throw lastErr || new Error('Could not load Medium feed');
 }
 
 export const mediumProfileUrl = (username) => {
