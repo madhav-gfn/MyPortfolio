@@ -107,3 +107,44 @@ img {
   height: auto;
   display: block;
 }
+
+/* ============================================================
+   Ambient background animations (theme: black / white / red)
+   Used by <AmbientBackground /> — GPU-friendly transform/opacity
+   ============================================================ */
+/* Translate-only drifts (no scale) so the compositor can move a
+   pre-rasterized layer instead of re-rendering it every frame. */
+@keyframes ambient-drift-a {
+  0%   { transform: translate3d(0, 0, 0); }
+  50%  { transform: translate3d(6vw, 4vh, 0); }
+  100% { transform: translate3d(0, 0, 0); }
+}
+
+@keyframes ambient-drift-b {
+  0%   { transform: translate3d(0, 0, 0); }
+  50%  { transform: translate3d(-7vw, -5vh, 0); }
+  100% { transform: translate3d(0, 0, 0); }
+}
+
+/* Opacity-only pulse (transform stays put via the element's base style). */
+@keyframes ambient-pulse {
+  0%, 100% { opacity: 0.22; }
+  50%      { opacity: 0.45; }
+}
+
+@keyframes ambient-grid-pan {
+  0%   { transform: translateY(0); }
+  100% { transform: translateY(60px); }
+}
+
+@keyframes ambient-scanline {
+  0%   { transform: translateY(-100%); }
+  100% { transform: translateY(100vh); }
+}
+
+/* Respect users who prefer reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .ambient-animated {
+    animation: none !important;
+  }
+}

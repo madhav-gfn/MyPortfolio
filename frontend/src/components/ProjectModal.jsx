@@ -49,7 +49,9 @@ const ProjectModal = ({ project, isOpen, onClose }) => {
   };
 
   // Support both array format ["feat1", "feat2"] and object format {"Name": "Description"}
-  const rawFeatures = projectMeta?.features;
+  // Prefer features from the repo's preview/project.json; otherwise fall back to
+  // the local override features attached to the project.
+  const rawFeatures = projectMeta?.features || project.features;
   const features = rawFeatures
     ? Array.isArray(rawFeatures)
       ? rawFeatures.map(f => ({ name: f, description: '' }))
@@ -111,7 +113,7 @@ const ProjectModal = ({ project, isOpen, onClose }) => {
                       {/* Title and Meta */}
                       <div className="flex-1 min-w-0">
                         <Dialog.Title className="text-3xl font-display font-bold text-white mb-2">
-                          {project.title}
+                          {project.displayTitle || project.title}
                         </Dialog.Title>
 
                         <div className="flex items-center gap-4 text-sm text-gray-400 mb-4">

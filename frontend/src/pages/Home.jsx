@@ -61,13 +61,10 @@ const Home = () => {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="min-h-screen pt-16 bg-black text-white"
+      className="min-h-screen pt-16 text-white"
     >
       {/* Hero Section */}
       <section className="min-h-[90vh] flex items-center px-4 sm:px-6 lg:px-8 relative overflow-hidden">
-        {/* Abstract Background Element - Minimal */}
-        <div className="absolute top-0 right-0 w-1/3 h-full bg-red-900/10 blur-[100px] pointer-events-none" />
-
         <div className="max-w-7xl mx-auto w-full z-10">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
             {/* Left Column - Text Content */}
@@ -147,7 +144,7 @@ const Home = () => {
       </section>
 
       {/* Quick Actions Section */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-black">
+      <section className="py-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
           <motion.div
             initial={{ y: 50, opacity: 0 }}

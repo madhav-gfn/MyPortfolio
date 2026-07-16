@@ -15,6 +15,8 @@ import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import TargetCursor from './components/TargetCursor';
 import SkeletonGameOfLife from './components/SkeletonGameOfLife';
+import AmbientBackground from './components/AmbientBackground';
+import AskMadhav from './components/AskMadhav';
 // Styles
 import './App.css';
 
@@ -23,6 +25,7 @@ function App() {
   return (
     <Router>
       <div className="min-h-screen bg-black text-white relative overflow-hidden pr-0 md:pr-20 pb-20 md:pb-0">
+        <AmbientBackground />
         <TargetCursor
           spinDuration={2}
           hideDefaultCursor
@@ -45,6 +48,7 @@ function App() {
         </main>
 
         <Footer />
+        <AskMadhav />
         <Toaster
           position="bottom-right"
           toastOptions={{

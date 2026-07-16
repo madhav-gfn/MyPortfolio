@@ -4,6 +4,7 @@ import { HiExternalLink, HiCode, HiEye } from 'react-icons/hi';
 import { FaGithub } from 'react-icons/fa';
 import Loader from '../components/Loader';
 import ProjectModal from '../components/ProjectModal';
+import { getProjectOverride } from '../data/projectOverrides';
 
 const Projects = () => {
   const githubUsername = import.meta.env.VITE_GITHUB_USERNAME;
@@ -60,15 +61,22 @@ const Projects = () => {
               console.error(`Failed to fetch languages for ${repo.name}`, err);
             }
 
-            const techStack = languages.length > 0
+            const detectedTech = languages.length > 0
               ? languages
               : (repo.topics?.length ? repo.topics.filter(t => t.toLowerCase() !== 'portfolio' && t.toLowerCase() !== 'others') : repo.language ? [repo.language] : []);
+
+            // GitHub's "About" description wins by default; the local override is
+            // only a fallback for the description, and is the source for the nicer
+            // displayTitle and the modal's Key Features.
+            const override = getProjectOverride(repo.name);
 
             return {
               id: repo.id,
               title: repo.name,
-              description: repo.description || 'No description provided.',
-              techStack: techStack,
+              displayTitle: override?.displayTitle || repo.name,
+              description: repo.description || override?.description || 'No description provided.',
+              techStack: override?.techStack?.length ? override.techStack : detectedTech,
+              features: override?.features || null,
               topics: repo.topics || [],
               github: repo.html_url,
               liveDemo: repo.homepage || '',
@@ -331,7 +339,7 @@ const ProjectCard = ({ project, onClick }) => {
       {/* Content */}
       <div className="p-6">
         <h3 className="text-xl font-semibold mb-2 text-white transition-colors line-clamp-1">
-          {project.title}
+          {project.displayTitle || project.title}
         </h3>
 
         <p className="text-gray-400 text-sm mb-4 line-clamp-2">

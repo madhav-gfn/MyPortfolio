@@ -1,5 +1,10 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
+import { HiDownload, HiArrowRight, HiBriefcase } from 'react-icons/hi';
+import { FaGithub, FaLinkedin } from 'react-icons/fa';
+
+const RESUME_URL = '/Madhav_Mishra_Resume.pdf';
 
 const About = () => {
   const summary = "Computer Science undergraduate specializing in HCI and Gaming Technology at IIIT Nagpur. Passionate about building scalable distributed systems, AI-powered applications, and performant backends. Experienced with LLM orchestration, cloud infrastructure, and full-stack development.";
@@ -8,9 +13,9 @@ const About = () => {
     degree: 'B.Tech in Computer Science and Engineering',
     institution: 'Indian Institute Of Information Technology, Nagpur',
     period: 'July 2023 – June 2027',
-    gpa: '7.96',
+    gpa: '7.93',
     specialization: 'Human Computer Interaction & Gaming Technology',
-    coursework: ['Data Structures & Algorithms', 'Operating Systems', 'DBMS', 'OOP', 'Algorithm Design', 'Human Computer Interaction', 'Software Engineering']
+    coursework: ['Data Structures & Algorithms', 'Operating Systems', 'Database Management Systems', 'OOP', 'Algorithm Design', 'Human Computer Interaction', 'Software Engineering', 'Computer Vision Techniques', 'Computer Graphics']
   };
 
   const skills = {
@@ -19,13 +24,19 @@ const About = () => {
       { name: 'C', level: 85 },
       { name: 'Python', level: 85 },
       { name: 'JavaScript', level: 85 },
+      { name: 'TypeScript', level: 85 },
       { name: 'C#', level: 60 }
     ],
-    'Systems & Backend': [
+    'Systems, Web & Backend': [
+      { name: 'React', level: 88 },
+      { name: 'Tailwind CSS', level: 88 },
       { name: 'Node.js', level: 85 },
       { name: 'Express.js', level: 85 },
+      { name: 'Next.js', level: 80 },
+      { name: 'Zustand', level: 78 },
       { name: 'FastAPI', level: 80 },
       { name: 'PostgreSQL', level: 85 },
+      { name: 'Prisma', level: 80 },
       { name: 'MongoDB', level: 80 },
       { name: 'Redis', level: 75 },
       { name: 'RESTful APIs', level: 90 }
@@ -56,36 +67,49 @@ const About = () => {
     {
       title: 'TeacherJi: AI Learning Platform',
       period: 'April 2026',
-      description: 'Architected a 3-agent tutoring system with a FAISS-backed retrieval pipeline over NCERT textbooks, eliminating LLM hallucination.',
+      description: 'Orchestrated a 3-agent tutoring system with a FAISS-backed retrieval pipeline over NCERT textbooks, requiring precise state management among distributed agents to eliminate LLM hallucination. Engineered a 3-step learning lifecycle (concept delivery, quiz generation, adaptive feedback) with data integrity spanning PostgreSQL profiles and Redis session state.',
       tech: ['FastAPI', 'React', 'LangGraph', 'Groq', 'FAISS', 'PostgreSQL', 'Redis'],
-      highlights: ['3-agent LangGraph orchestration', 'Sub-200ms inference with Groq', 'Adaptive feedback loops']
+      highlights: ['3-agent LangGraph orchestration', 'Sub-200ms inference with Groq (OpenAI OSS 120B)', 'Adaptive feedback loops', 'Deployed on Render & Vercel']
     },
     {
-      title: 'L-Systems & IFS Studio',
-      period: 'Nov 2025 – April 2026',
-      description: 'Engineered a Python OOP state machine parsing 23 graphical commands to expand stochastic grammars up to 5,000,000 characters.',
-      tech: ['Python', 'FastAPI', 'React', 'Three.js', 'NumPy'],
-      highlights: ['500k real-time coordinate rendering', 'Sub-1.5s renders for 100k-point fractals', 'Vectorized NumPy math']
+      title: 'RAG-Powered Local Code Review Engine',
+      period: 'July 2026',
+      description: 'Built a fully local RAG pipeline: Tree-sitter parses code into function/class-level units, a Qwen2.5-Coder ONNX model embeds them, and a FAISS HNSW index retrieves relevant context with content-hash incremental re-indexing. Enforced grammar-constrained decoding (GBNF) at the sampling layer to guarantee structurally valid JSON, powering a deterministic severity-scoring engine.',
+      tech: ['C++20', 'ONNX', 'FAISS', 'llama.cpp', 'Tree-sitter', 'SQLite'],
+      highlights: ['Function/class-level RAG over code', 'GBNF grammar-constrained JSON output', 'Incremental content-hash re-indexing', 'Persistent-model daemon with cached KV state']
     },
     {
-      title: 'GamesLog: Social Gaming Tracker',
-      period: 'Dec 2025 – April 2026',
-      description: 'Designed a normalized relational backend with 10 PostgreSQL tables and 18 custom indexes; AI-powered recommendation engine.',
-      tech: ['Node.js', 'PostgreSQL', 'Prisma', 'RESTful API', 'Groq', 'Llama 3'],
-      highlights: ['50+ RESTful endpoints', 'AI game recommendations', 'Horizontal scalability design']
+      title: 'AI-Native CRM with Campaign Automation',
+      period: 'June 2026',
+      description: 'Designed a 6-model PostgreSQL schema with Prisma ORM; constructed a chunked dispatch pipeline (50 msg/batch, Promise.allSettled) and a serializable webhook processor with status-rank guards against out-of-order events. Integrated Google Gemini 2.0 Flash across NL-to-filter segmentation, a RAG Campaign Copilot, and a post-campaign insight engine.',
+      tech: ['TypeScript', 'Node.js', 'PostgreSQL', 'Prisma', 'Next.js 16', 'Google Gemini 2.0'],
+      highlights: ['15+ REST endpoints', 'Chunked dispatch + webhook status guards', 'SENT → DELIVERED → OPENED → CLICKED funnels', 'Cron scheduler & channel-simulator microservice']
     },
     {
-      title: 'Linux Fleet Management System',
-      period: 'Jan 2026 – April 2026',
-      description: 'Deployed a 3-node Ubuntu VM fleet with centralized monitoring; Prometheus + Node Exporter collecting 150+ metrics.',
-      tech: ['Linux', 'Prometheus', 'Grafana', 'Node Exporter', 'SSH'],
-      highlights: ['150+ metrics at 15s intervals', 'Custom Grafana dashboards', 'Passwordless SSH automation']
+      title: 'JSON-Driven Educational Game Engine Platform',
+      period: 'Jan 2025 – Present',
+      description: 'Architected a zero-code game engine for students with Zod-validated JSON configs, enabling 12+ game types through pluggable renderers without modifying engine core. Added an AI generation pipeline that turns prompts into valid configs auto-validated against 8+ schema constraints.',
+      tech: ['TypeScript', 'React', 'Express', 'SQLite', 'Zod'],
+      highlights: ['12+ game types via JSON config', '1000+ submissions/second', 'AI generation pipeline', '3-tier leaderboard over SQLite WAL']
+    }
+  ];
+
+  const experience = [
+    {
+      role: 'Freelance Full Stack Development – Product Engineering',
+      company: 'Henwic Biomedics',
+      location: 'Remote / India',
+      period: 'May 2026 – June 2026',
+      points: [
+        'Developed an interactive biomedical product marketing website with React, TypeScript, and WebGL shaders.',
+        'Implemented scroll animations, particle effects, and lead-capture integration with EmailJS and Google Analytics.'
+      ]
     }
   ];
 
   const achievements = [
     { title: '1st Place / 20+ teams', event: 'TECHNEX\'25 Game Jam', org: 'IIT BHU (2025)', detail: 'Deception-driven tower defense' },
-    { title: '1st Prize / 30+ teams', event: 'Tantarfiesta\'25 Designathon', org: 'UI/UX Hackathon', detail: 'Non-linear, emotion-based journaling app design' },
+    { title: '1st Prize / 30+ teams', event: 'Tantarfiesta\'25 Designathon', org: 'Designathon', detail: 'Non-linear, emotion based journaling app design' },
     { title: '3rd Runner-Up', event: 'Exergy Case Study Challenge', org: 'IIT Kanpur (2025)', detail: 'Case study competition' }
   ];
 
@@ -110,11 +134,54 @@ const About = () => {
           className="mb-20"
         >
           <div className="relative">
+            <span className="inline-flex items-center gap-2 mb-5 px-3 py-1 rounded-full border border-red-500/30 bg-red-500/10 text-red-400 text-xs font-medium tracking-wide">
+              <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
+              Available for opportunities
+            </span>
             <h1 className="text-5xl md:text-7xl font-display font-bold mb-6">
               <span className="text-white">Madhav</span>
               <span className="text-red-500"> Mishra</span>
             </h1>
             <p className="text-xl text-gray-400 max-w-2xl leading-relaxed">{summary}</p>
+
+            {/* Call-to-action row — makes the resume & contact easy to reach */}
+            <div className="flex flex-wrap items-center gap-4 mt-8">
+              <a
+                href={RESUME_URL}
+                download
+                className="cursor-target group inline-flex items-center gap-2 px-6 py-3 bg-red-500 hover:bg-red-600 text-white font-medium rounded-xl transition-all duration-300 hover:shadow-glow-lg"
+              >
+                <HiDownload className="w-5 h-5 transition-transform group-hover:translate-y-0.5" />
+                Download Résumé
+              </a>
+              <Link
+                to="/contact"
+                className="cursor-target group inline-flex items-center gap-2 px-6 py-3 border border-white/20 hover:border-red-500/50 text-white font-medium rounded-xl transition-all duration-300"
+              >
+                Get in Touch
+                <HiArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
+              </Link>
+              <div className="flex items-center gap-3 sm:ml-2">
+                <a
+                  href="https://github.com/madhav-gfn"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="GitHub"
+                  className="cursor-target w-11 h-11 flex items-center justify-center rounded-xl border border-white/20 text-gray-400 hover:text-red-500 hover:border-red-500 transition-all duration-200"
+                >
+                  <FaGithub className="w-5 h-5" />
+                </a>
+                <a
+                  href="https://linkedin.com/in/madhav-gfn"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="LinkedIn"
+                  className="cursor-target w-11 h-11 flex items-center justify-center rounded-xl border border-white/20 text-gray-400 hover:text-red-500 hover:border-red-500 transition-all duration-200"
+                >
+                  <FaLinkedin className="w-5 h-5" />
+                </a>
+              </div>
+            </div>
           </div>
         </motion.div>
 
@@ -170,6 +237,52 @@ const About = () => {
                 </motion.div>
               ))}
             </div>
+          </div>
+        </motion.section>
+
+        {/* Experience */}
+        <motion.section
+          initial={{ y: 50, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ delay: 0.15 }}
+          className="mb-20"
+        >
+          <h2 className="text-3xl font-display font-bold mb-8">Experience</h2>
+          <div className="space-y-6">
+            {experience.map((exp, idx) => (
+              <motion.div
+                key={idx}
+                initial={{ x: -30, opacity: 0 }}
+                whileInView={{ x: 0, opacity: 1 }}
+                viewport={{ once: true }}
+                transition={{ delay: idx * 0.1 }}
+                className="relative bg-dark-800/50 backdrop-blur-sm rounded-2xl border border-gray-700/50 p-8 pl-10 hover:shadow-glow-lg transition-all duration-300"
+              >
+                {/* Accent bar */}
+                <span className="absolute left-0 top-6 bottom-6 w-1 rounded-full bg-red-500" />
+                <div className="flex flex-col md:flex-row md:items-start md:justify-between mb-4 gap-2">
+                  <div>
+                    <h3 className="text-xl font-bold text-white flex items-center gap-2">
+                      <HiBriefcase className="text-red-500 w-5 h-5" />
+                      {exp.role}
+                    </h3>
+                    <p className="text-red-500 font-medium mt-1">{exp.company}</p>
+                  </div>
+                  <div className="md:text-right">
+                    <span className="text-xs text-gray-400 bg-dark-700/50 px-3 py-1 rounded-full">{exp.period}</span>
+                    <p className="text-gray-500 text-xs mt-2">{exp.location}</p>
+                  </div>
+                </div>
+                <ul className="space-y-2">
+                  {exp.points.map((point, i) => (
+                    <li key={i} className="flex items-start gap-3 text-gray-300 text-sm leading-relaxed">
+                      <span className="w-1.5 h-1.5 bg-red-500 rounded-full mt-2 flex-shrink-0" />
+                      {point}
+                    </li>
+                  ))}
+                </ul>
+              </motion.div>
+            ))}
           </div>
         </motion.section>
 
@@ -329,7 +442,7 @@ const About = () => {
         >
           <h2 className="text-2xl font-display font-bold mb-6">Areas of Interest</h2>
           <div className="flex flex-wrap justify-center gap-3">
-            {['Software Quality', 'Scalable Systems', 'HCI', 'Game Design', 'Performance Optimization'].map((interest, idx) => (
+            {['Software Development', 'Scalable Systems', 'HCI', 'AI/LLM Engineering', 'Performance Optimization'].map((interest, idx) => (
               <motion.span
                 key={idx}
                 initial={{ scale: 0 }}

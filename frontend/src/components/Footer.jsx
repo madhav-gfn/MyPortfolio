@@ -62,10 +62,10 @@ const Footer = () => {
                 <div className="flex items-center gap-3 text-gray-400">
                   <HiMail className="w-4 h-4 text-red-500" />
                   <a
-                    href="mailto:madmishra72@gmail.com"
+                    href="mailto:madhavmishra763@gmail.com"
                     className="cursor-target text-gray-400 hover:text-red-500 transition-colors"
                   >
-                    madmishra72@gmail.com
+                    madhavmishra763@gmail.com
                   </a>
                 </div>
                 <div className="flex items-center gap-3 text-gray-400">

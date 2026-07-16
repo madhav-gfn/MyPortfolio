@@ -49,7 +49,7 @@ const Contact = () => {
       const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
 
       if (!serviceId || !templateId || !publicKey) {
-        throw new Error('Email service is not configured. Please contact me directly at madmishra72@gmail.com');
+        throw new Error('Email service is not configured. Please contact me directly at madhavmishra763@gmail.com');
       }
 
       // Send email directly from the browser using EmailJS
@@ -88,8 +88,8 @@ const Contact = () => {
     {
       icon: HiMail,
       label: 'Email',
-      value: 'madmishra72@gmail.com',
-      href: 'mailto:madmishra72@gmail.com',
+      value: 'madhavmishra763@gmail.com',
+      href: 'mailto:madhavmishra763@gmail.com',
     },
     {
       icon: HiPhone,
