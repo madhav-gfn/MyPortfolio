@@ -61,7 +61,7 @@ const Home = () => {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="min-h-screen pt-16 text-white"
+      className="min-h-screen pt-16 text-white home-page"
     >
       {/* Hero Section */}
       <section className="min-h-[90vh] flex items-center px-4 sm:px-6 lg:px-8 relative overflow-hidden">

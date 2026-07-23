@@ -54,7 +54,7 @@ const Navbar = () => {
           <motion.div className="absolute top-8">
             <Link
               to="/"
-              className="cursor-target text-xl font-display font-bold text-white group"
+              className="text-xl font-display font-bold text-white group"
             >
               {isExpanded ? (
                 <span>
@@ -73,7 +73,7 @@ const Navbar = () => {
                 <motion.div key={item.path} className="w-full flex justify-center">
                   <Link
                     to={item.path}
-                    className={`cursor-target flex items-center p-3 rounded-lg font-medium transition-all duration-200 relative ${location.pathname === item.path
+                    className={`flex items-center p-3 rounded-lg font-medium transition-all duration-200 relative ${location.pathname === item.path
                       ? 'text-white bg-white/10'
                       : 'text-gray-300'
                       } ${isExpanded ? 'w-[160px] px-4 justify-start space-x-3' : 'w-12 justify-center'}`}
@@ -110,7 +110,7 @@ const Navbar = () => {
               <Link
                 key={item.path}
                 to={item.path}
-                className={`cursor-target flex flex-col items-center gap-1 p-2 rounded-lg transition-all duration-200 ${location.pathname === item.path
+                className={`flex flex-col items-center gap-1 p-2 rounded-lg transition-all duration-200 ${location.pathname === item.path
                   ? 'text-red-500'
                   : 'text-gray-400'
                   }`}

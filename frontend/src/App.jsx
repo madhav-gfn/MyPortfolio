@@ -28,21 +28,18 @@ function App() {
   const [isInitialLoad, setIsInitialLoad] = useState(true);
 
   React.useEffect(() => {
-    // Force the loader to show for at least a few seconds on initial load
-    // so the user can experience the tech vibe
+    // Force the loader to show for 15 seconds on initial load
+    // so the user can experience the 3D cube disintegration effect
     const timer = setTimeout(() => {
       setIsInitialLoad(false);
-    }, 3000);
+    }, 15000);
     return () => clearTimeout(timer);
   }, []);
-
-  if (isInitialLoad) {
-    return <Loader />;
-  }
 
   return (
     <Router>
       <ScrollToTop />
+      {isInitialLoad && <Loader />}
       <div className="min-h-screen bg-black text-white relative overflow-hidden pr-0 md:pr-20 pb-20 md:pb-0">
         <AmbientBackground />
         <ThreeDBackground />
