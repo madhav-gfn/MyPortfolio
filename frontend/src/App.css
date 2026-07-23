@@ -188,6 +188,12 @@
   }
 }
 
+.home-page {
+  position: relative;
+  z-index: 10;
+  isolation: isolate;
+}
+
 /* Component layer */
 @layer components {
   /* Button variants */

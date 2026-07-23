@@ -1,14 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, Suspense, lazy } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 import { AnimatePresence } from 'framer-motion';
 
-// Pages
-import Home from './pages/Home';
-import Projects from './pages/Projects';
-import Blogs from './pages/Blogs';
-import Contact from './pages/Contact';
-import About from './pages/About';
+// Lazy-loaded Pages
+const Home = lazy(() => import('./pages/Home'));
+const Projects = lazy(() => import('./pages/Projects'));
+const Blogs = lazy(() => import('./pages/Blogs'));
+const Contact = lazy(() => import('./pages/Contact'));
+const About = lazy(() => import('./pages/About'));
 
 // Components
 import Navbar from './components/Navbar';
@@ -17,15 +17,32 @@ import TargetCursor from './components/TargetCursor';
 import SkeletonGameOfLife from './components/SkeletonGameOfLife';
 import AmbientBackground from './components/AmbientBackground';
 import AskMadhav from './components/AskMadhav';
+import Loader from './components/Loader';
+import ThreeDBackground from './components/ThreeDBackground';
+import ScrollToTop from './components/ScrollToTop';
 // Styles
 import './App.css';
 
 function App() {
-  const [gameOfLifeActive, setGameOfLifeActive] = useState(false);
+  const [, setGameOfLifeActive] = useState(false);
+  const [isInitialLoad, setIsInitialLoad] = useState(true);
+
+  React.useEffect(() => {
+    // Force the loader to show for 15 seconds on initial load
+    // so the user can experience the 3D cube disintegration effect
+    const timer = setTimeout(() => {
+      setIsInitialLoad(false);
+    }, 15000);
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
     <Router>
+      <ScrollToTop />
+      {isInitialLoad && <Loader />}
       <div className="min-h-screen bg-black text-white relative overflow-hidden pr-0 md:pr-20 pb-20 md:pb-0">
         <AmbientBackground />
+        <ThreeDBackground />
         <TargetCursor
           spinDuration={2}
           hideDefaultCursor
@@ -37,13 +54,15 @@ function App() {
 
         <main className="relative z-10 pb-20 md:pb-0">
           <AnimatePresence mode="wait">
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/projects" element={<Projects />} />
-              <Route path="/blogs" element={<Blogs />} />
-              <Route path="/contact" element={<Contact />} />
-              <Route path="/about" element={<About />} />
-            </Routes>
+            <Suspense fallback={<Loader />}>
+              <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/projects" element={<Projects />} />
+                <Route path="/blogs" element={<Blogs />} />
+                <Route path="/contact" element={<Contact />} />
+                <Route path="/about" element={<About />} />
+              </Routes>
+            </Suspense>
           </AnimatePresence>
         </main>
 

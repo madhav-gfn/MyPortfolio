@@ -61,7 +61,7 @@ const Home = () => {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="min-h-screen pt-16 text-white"
+      className="min-h-screen pt-16 text-white home-page"
     >
       {/* Hero Section */}
       <section className="min-h-[90vh] flex items-center px-4 sm:px-6 lg:px-8 relative overflow-hidden">
@@ -144,12 +144,13 @@ const Home = () => {
       </section>
 
       {/* Quick Actions Section */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8">
+      <section className="py-20 px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="max-w-7xl mx-auto">
           <motion.div
             initial={{ y: 50, opacity: 0 }}
             whileInView={{ y: 0, opacity: 1 }}
-            viewport={{ once: true }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
             className="mb-16 border-b border-white/10 pb-4"
           >
             <h2 className="text-2xl md:text-3xl font-display font-bold text-white">
@@ -161,26 +162,30 @@ const Home = () => {
             {quickActions.map((action, index) => (
               <motion.div
                 key={action.title}
-                initial={{ y: 30, opacity: 0 }}
+                initial={{ y: 50, opacity: 0 }}
                 whileInView={{ y: 0, opacity: 1 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.1 }}
-                className="group"
+                viewport={{ once: true, margin: "-50px" }}
+                transition={{ delay: index * 0.15, duration: 0.6, ease: "easeOut" }}
+                whileHover={{ y: -10, transition: { duration: 0.2 } }}
+                className="group h-full"
               >
                 <Link
                   to={action.path}
-                  className="cursor-target block p-8 h-full border border-white/10 hover:border-red-500/50 bg-white/5 hover:bg-white/10 transition-all duration-300 relative overflow-hidden rounded-3xl"
+                  className="cursor-target block p-8 h-full border border-white/10 hover:border-red-500/50 bg-white/5 hover:bg-white/10 hover:shadow-[0_0_30px_rgba(239,68,68,0.15)] transition-all duration-300 relative overflow-hidden rounded-3xl"
                 >
+                  {/* Hover gradient background effect */}
+                  <div className="absolute inset-0 bg-gradient-to-br from-red-500/0 via-red-500/0 to-red-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+
                   <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
-                    <img src={action.icon} alt={action.title} className="w-24 h-24 filter brightness-0 invert" />
+                    <img src={action.icon} alt={action.title} className="w-24 h-24 filter brightness-0 invert group-hover:scale-110 transition-transform duration-500" />
                   </div>
 
                   <div className="relative z-10 flex flex-col h-full justify-between">
                     <div>
-                      <div className="w-12 h-12 mb-6 filter brightness-0 invert">
+                      <div className="w-12 h-12 mb-6 filter brightness-0 invert group-hover:scale-110 transition-transform duration-300">
                         <img src={action.icon} alt={action.title} className="w-full h-full object-contain" />
                       </div>
-                      <h3 className="text-2xl font-bold mb-2 text-white">
+                      <h3 className="text-2xl font-bold mb-2 text-white group-hover:text-red-400 transition-colors duration-300">
                         {action.title}
                       </h3>
                       <p className="text-gray-400">
@@ -190,7 +195,7 @@ const Home = () => {
 
                     <div className="mt-8 flex items-center text-red-500 font-medium group-hover:translate-x-2 transition-transform">
                       <span>Enter</span>
-                      <HiArrowRight className="ml-2" />
+                      <HiArrowRight className="ml-2 group-hover:ml-4 transition-all duration-300" />
                     </div>
                   </div>
                 </Link>
@@ -201,12 +206,13 @@ const Home = () => {
       </section>
 
       {/* Skills Section */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8 border-t border-white/10">
+      <section className="py-20 px-4 sm:px-6 lg:px-8 border-t border-white/10 relative z-10">
         <div className="max-w-7xl mx-auto text-center">
           <motion.div
-            initial={{ y: 30, opacity: 0 }}
+            initial={{ y: 50, opacity: 0 }}
             whileInView={{ y: 0, opacity: 1 }}
-            viewport={{ once: true }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.8 }}
             className="mb-12"
           >
             <h2 className="text-3xl md:text-4xl font-display font-bold mb-4 text-white">
@@ -215,9 +221,13 @@ const Home = () => {
           </motion.div>
 
           <motion.div
-            initial={{ y: 30, opacity: 0 }}
-            whileInView={{ y: 0, opacity: 1 }}
-            viewport={{ once: true }}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-50px" }}
+            variants={{
+              visible: { transition: { staggerChildren: 0.05 } },
+              hidden: {}
+            }}
             className="flex flex-wrap justify-center gap-4"
           >
             {[
@@ -231,14 +241,21 @@ const Home = () => {
               { name: 'LangGraph / AI', icon: HiSparkles },
               { name: 'Prometheus', icon: HiServer },
               { name: 'Grafana', icon: HiChartBar },
-            ].map((tech, index) => (
+            ].map((tech) => (
               <motion.span
                 key={tech.name}
-                initial={{ scale: 0, opacity: 0 }}
-                whileInView={{ scale: 1, opacity: 1 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.05 }}
-                className="cursor-default inline-flex items-center gap-2 px-6 py-3 bg-white/5 border border-white/10 text-white rounded-full text-lg font-medium hover:bg-red-500 hover:border-red-500 transition-all duration-300"
+                variants={{
+                  hidden: { opacity: 0, scale: 0.8, y: 20 },
+                  visible: { opacity: 1, scale: 1, y: 0 }
+                }}
+                whileHover={{
+                  scale: 1.1,
+                  backgroundColor: "rgba(239, 68, 68, 1)",
+                  borderColor: "rgba(239, 68, 68, 1)",
+                  boxShadow: "0 0 20px rgba(239, 68, 68, 0.4)",
+                  transition: { duration: 0.2 }
+                }}
+                className="cursor-default inline-flex items-center gap-2 px-6 py-3 bg-white/5 border border-white/10 text-white rounded-full text-lg font-medium transition-colors duration-300"
               >
                 <tech.icon className="w-5 h-5" />
                 {tech.name}
